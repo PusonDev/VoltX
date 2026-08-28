@@ -1,0 +1,78 @@
+import { NextRequest, NextResponse } from "next/server";
+import { signCookie, verifyCookie, COOKIE_NAME, COOKIE_MAX_AGE } from "@/lib/cookies";
+import crypto from "crypto";
+
+/**
+ * GET /api/lead — Check if user has a valid lead cookie
+ */
+export async function GET(request: NextRequest) {
+  const cookieValue = request.cookies.get(COOKIE_NAME)?.value;
+
+  if (!cookieValue) {
+    return NextResponse.json({ authenticated: false }, { status: 200 });
+  }
+
+  const leadId = await verifyCookie(cookieValue);
+
+  if (!leadId) {
+    return NextResponse.json({ authenticated: false }, { status: 200 });
+  }
+
+  return NextResponse.json({ authenticated: true, leadId }, { status: 200 });
+}
+
+/**
+ * POST /api/lead — Handle email capture
+ * 
+ * - If email already exists: match existing lead, log topic-touch, re-issue cookie
+ * - If new email: create lead, log topic-touch, issue cookie
+ * - Marketing consent defaults to false (checkbox unchecked)
+ * - Never creates duplicate lead rows
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { email, marketing_consent, topic_slug, page_type, source } = body;
+
+    if (!email || !email.includes("@")) {
+      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    }
+
+    // Generate a unique lead ID (in production, this would be from Supabase)
+    const leadId = crypto.randomUUID();
+    const cookieToken = await signCookie(leadId);
+
+    // In production, this would:
+    // 1. Check if email exists in `leads` table
+    //    - If yes: get existing lead_id, don't create duplicate
+    //    - If no: insert new lead row
+    // 2. Insert topic-touch row in `lead_topic_touches`
+    // 3. Issue/re-issue cookie
+
+    // For now (mock), just issue the cookie
+    const response = NextResponse.json(
+      {
+        success: true,
+        message: "Lead captured",
+        // Never return internal data like lead_id to client
+      },
+      { status: 200 }
+    );
+
+    // Set httpOnly cookie
+    response.cookies.set(COOKIE_NAME, cookieToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: COOKIE_MAX_AGE,
+      path: "/",
+    });
+
+    return response;
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

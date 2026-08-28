@@ -1,0 +1,319 @@
+লগো দেখলাম — বুঝলাম, temporary হিসেবে ব্যবহার করছ, পরে বদলাবে। এখনকার মতো এটাই থাক, তবে একটা জিনিস মাথায় রেখো: এই লোগোতে blue+silver+amber আছে, কিন্তু website palette আমরা emerald/green-এ ফিক্স করেছি — সাময়িকভাবে সামান্য mismatch থাকবে, সমস্যা না, নতুন লোগো বানানোর সময় green-এর সাথে align করে নিও।
+
+একটা জিনিস দেওয়ার আগে flag করে দেই — তোমার দুইটা requirement একটু conflict করছে:
+
+> "যেই পেজই promote করি, user must email দিয়ে entry করা লাগবে" **বনাম** "SEO টাও ভালো করিও"
+
+সব content page gate করে দিলে **Google crawl করতে পারবে না**, ফলে organic SEO পুরোপুরি মরে যাবে (gated content index হয় না)। তাই আমি এভাবে resolve করছি — তুমি চাইলে বদলাতে বলো:
+
+- **Public/crawlable (SEO-এর জন্য open থাকবে):** guides, reviews, problem pages, tools directory — এগুলো Google-এর জন্য open, কিন্তু ভেতরে diagnostic/CTA দিয়ে funnel-এ ঢোকাবে
+- **Gated (email must):** diagnostic result/personalized recommendation, downloadable resource, আর তুমি যে specific campaign landing page থেকে সরাসরি promote করো (paid/social/direct link) — এগুলোতে email gate থাকবে
+
+এভাবে SEO-ও বাঁচবে, funnel gate-ও থাকবে। নিচের প্রম্পটে এই logic-ই লেখা আছে।
+
+এবার পুরো prompt — কপি করে সরাসরি Antigravity-তে দিতে পারবে। Sub-page/routing অংশটা ইচ্ছাকৃতভাবে খুব explicit করে লিখেছি, কারণ এখানেই AI tool গুলো সবচেয়ে বেশি ভুল করে:
+
+```
+PROJECT: VoltX — Problem-First Small-Business Cybersecurity & Privacy Advisor Platform
+
+═══════════════════════════════════════════════════════
+1. CORE CONCEPT (non-negotiable)
+═══════════════════════════════════════════════════════
+VoltX is NOT an affiliate-link directory. It is a problem-solving advisor site.
+User flow: user has a problem → diagnostic identifies it → site recommends a
+fitted product stack → affiliate/direct link is embedded INSIDE that
+recommendation, never presented as the main content.
+
+Never build a page that is just "Product A / Product B / Product C + buy link."
+Every indexable page must contain original analysis, comparison logic, or
+decision criteria — not merchant description copy.
+
+Ranking rule: products are ranked by fit_score/editorial_score ONLY.
+Commission amount must NEVER influence ranking or recommendation order.
+
+═══════════════════════════════════════════════════════
+2. BRAND
+═══════════════════════════════════════════════════════
+Name: VoltX
+Tagline direction: confident, protective, modern — NOT generic "AI startup" tone.
+A placeholder logo exists (dark navy bg, silver "V" + amber lightning bolt "X",
+blue glow). It WILL be replaced later — do not hard-lock brand colors to it.
+
+═══════════════════════════════════════════════════════
+3. TECH STACK
+═══════════════════════════════════════════════════════
+- Next.js (App Router) + TypeScript + Tailwind CSS
+- Supabase (Postgres + Row Level Security) — all content/product data lives here,
+  NOT hardcoded in components
+- Vercel hosting
+- Framer Motion for scroll/hover motion (used sparingly, CSS transforms/opacity
+  preferred for simple transitions)
+
+═══════════════════════════════════════════════════════
+4. DESIGN SYSTEM — read this section carefully, it overrides any default styling
+═══════════════════════════════════════════════════════
+GOAL: Look like a premium, human-designed SaaS product (Stripe / Linear /
+Vercel dashboard level polish). Must NOT look like a generic AI-generated
+landing page.
+
+EXPLICITLY FORBIDDEN:
+- Dark background as default theme
+- Blue or any blue-family color anywhere in the UI (including default Tailwind
+  "blue-*" classes) — this is a hard rule
+- Large glowing radial gradient blobs / "AI slop" hero backgrounds
+- Purple/violet gradients
+- Overused glassmorphism on every card
+- Default system/Inter font with no typographic hierarchy
+- Perfectly symmetric, centered-everything template layout
+
+REQUIRED PALETTE (light theme):
+- Background: #FFFFFF (primary), #F9FAFB (secondary sections)
+- Primary text: #0F172A
+- Secondary text: #475569
+- Primary accent (emerald/green — trust + security):
+    action/CTA: #059669
+    hover: #047857
+    soft tint bg (badges, highlight sections): #ECFDF5
+    dark accent text on tint: #065F46
+- Optional micro-accent (used SPARINGLY — icons, small highlight glows only,
+  ties back to the "Volt/electricity" brand idea, NEVER as a large surface):
+  amber #F59E0B
+- Borders/dividers: #E2E8F0
+
+TYPOGRAPHY:
+- A distinct sans with real personality for headlines (e.g. Geist, or a
+  similar modern grotesk) — bold weight, tight tracking on large headlines
+- Body text: comfortable line-height (1.6+), readable size (16px+ base)
+
+LAYOUT:
+- Break symmetry deliberately in at least hero and feature sections
+  (asymmetric grid, offset elements) — do not center everything
+- Mix card-based sections with editorial/list-based sections — don't make
+  everything a rounded card
+- Motion: subtle scroll-reveal (IntersectionObserver) + hover states only.
+  No heavy parallax, no autoplay video backgrounds. Respect
+  prefers-reduced-motion.
+
+═══════════════════════════════════════════════════════
+5. SITE ARCHITECTURE / FULL ROUTE TREE — follow this EXACTLY
+═══════════════════════════════════════════════════════
+Use ONE locale pattern only: app/[locale]/... (dynamic segment, locale = "en" | "ar").
+Do NOT also create separate hardcoded /en/ or /ar/ folders — that creates
+duplicate/conflicting routes. Pick the dynamic [locale] pattern and use it
+consistently everywhere.
+
+app/
+  [locale]/
+    layout.tsx              → locale-aware shell; sets <html lang> + dir="rtl"
+                               for ar; injects hreflang alternates for every
+                               page (not just homepage)
+    page.tsx                → Homepage (public)
+    hub/
+      page.tsx               → Central content hub: lists/links every guide,
+                                review, problem page, and comparison on the
+                                site. This is the "index of everything" page
+                                the user asked for — all blog/content
+                                sub-pages must be discoverable from here.
+    problems/
+      page.tsx               → Problems index (public)
+      [slug]/
+        page.tsx              → Individual problem page (public, SEO-crawlable)
+    diagnostic/
+      page.tsx               → Diagnostic tool entry (public)
+      result/
+        page.tsx              → GATED — requires email before showing
+                                 personalized recommendation
+    tools/
+      page.tsx               → Full product directory with filters (public)
+    compare/
+      [pair]/
+        page.tsx              → e.g. /compare/1password-vs-nordpass (public)
+    reviews/
+      [slug]/
+        page.tsx              → Individual product review (public)
+    guides/
+      [slug]/
+        page.tsx              → Editorial guide content (public)
+    best/
+      [slug]/
+        page.tsx              → e.g. /best/password-manager-for-small-business
+                                 (public)
+    campaigns/
+      [slug]/
+        page.tsx              → GATED landing pages built specifically for
+                                 external promotion (social/paid/direct links) —
+                                 THIS is where the "every page I promote
+                                 requires email" rule applies, not the
+                                 SEO content pages above
+    about/page.tsx
+    privacy/page.tsx
+    terms/page.tsx
+  api/
+    diagnostic/route.ts
+    lead/route.ts             → handles email capture + cookie issuance +
+                                 topic-touch logging
+    click/[productId]/route.ts → affiliate click logging
+
+CRITICAL RULES FOR DYNAMIC [slug] ROUTES:
+- generateStaticParams must pull slugs from Supabase at build time — never
+  hardcode a fixed slug list in the component
+- Every dynamic page must set its own <title>, meta description, canonical
+  URL, and hreflang alternates individually — do not reuse the homepage's
+  metadata as a fallback
+- When new content (a new product, guide, or problem) is added to Supabase in
+  English, both /en/... and /ar/... routes for it must resolve correctly —
+  the ar/ version should show translated content if available, or a clearly
+  flagged "translation pending" state — NEVER silently show blank or 404
+- Do not let the [locale] dynamic segment and any static folder route
+  conflict — test that /en/guides/test-slug and /ar/guides/test-slug both
+  resolve independently
+
+═══════════════════════════════════════════════════════
+6. i18n / AUTO-TRANSLATION PIPELINE (real, not a fake switcher)
+═══════════════════════════════════════════════════════
+Previous attempt used Weglot which only flipped direction, not actual content.
+This must be a REAL Next.js locale system:
+- next-intl or equivalent, with per-locale JSON/dictionary files for UI strings
+- For CONTENT (guides, reviews, product descriptions) stored in Supabase:
+  add a `translations` JSONB column or a separate `content_translations`
+  table keyed by (content_id, locale)
+- Build an automated pipeline: when new English content is inserted/updated
+  in Supabase, a server-side hook/job calls a translation API and writes a
+  DRAFT Arabic translation automatically, flagged `needs_review: true`.
+  It must NOT require a manual re-trigger step — this was the bug last time.
+- A human (the user) reviews/approves before it's marked `published`
+- Arabic pages must fully RTL-rebalance layout (not just mirror) — test
+  spacing, icon direction, and alignment specifically on Arabic pages
+
+═══════════════════════════════════════════════════════
+7. LEAD / EMAIL GATE SYSTEM
+═══════════════════════════════════════════════════════
+- Gate applies to: diagnostic result page + campaign landing pages only
+  (see routing section above) — NOT to public SEO content
+- On first email submission: issue a signed cookie (httpOnly, contains a
+  hashed lead identifier), store in `leads` table
+- On any subsequent visit where the cookie is present and valid: skip the
+  gate entirely, no re-prompt
+- If cookie is missing (new device/incognito) but the submitted email
+  already exists in `leads`: do NOT create a duplicate row — match existing
+  lead, just log a new topic-touch and re-issue the cookie
+- Every gated interaction (regardless of whether email was newly captured or
+  matched) logs a row in `lead_topic_touches`: lead_id, topic/page slug,
+  source, timestamp — so the user can see every topic a given lead has
+  engaged with over time
+- Result-delivery email and marketing-consent are SEPARATE. Marketing
+  consent checkbox defaults to UNCHECKED. Do not subscribe anyone to
+  marketing silently.
+
+═══════════════════════════════════════════════════════
+8. DATA MODEL (Supabase)
+═══════════════════════════════════════════════════════
+products
+  id UUID PK, slug TEXT UNIQUE, name, vendor, category, subcategory,
+  description, target_segment TEXT[], platforms TEXT[], pricing_model,
+  price_from NUMERIC, recurring BOOLEAN, commission_type, commission_value,
+  affiliate_status TEXT CHECK IN ('approved','application-pending',
+    'network-program','direct-only','unverified'),
+  affiliate_network, affiliate_url NULL, direct_url NOT NULL,
+  cookie_days, last_verified_at, editorial_score, fit_score,
+  internal_notes TEXT   -- INTERNAL ONLY, never rendered on any public page
+  created_at, updated_at
+
+problem_clusters
+  id, slug UNIQUE, title, short_description, urgency_score,
+  buyer_intent_score, evergreen_score, competition_score
+
+product_problem_fit
+  product_id FK, problem_id FK, fit_score, explanation
+
+leads
+  id, email, source, diagnostic_result JSONB, marketing_consent BOOLEAN
+  DEFAULT false, consent_timestamp NULL, locale, cookie_token,
+  created_at
+
+lead_topic_touches
+  id, lead_id FK, topic_slug, page_type, source, created_at
+
+affiliate_clicks
+  id, product_id FK, session_id, locale, page_slug, placement, created_at
+
+content_translations
+  id, content_type, content_id, locale, translated_fields JSONB,
+  needs_review BOOLEAN DEFAULT true, published BOOLEAN DEFAULT false
+
+═══════════════════════════════════════════════════════
+9. AFFILIATE LINK ARCHITECTURE
+═══════════════════════════════════════════════════════
+- Never hardcode a merchant URL in any component
+- Single resolver: resolveMerchantUrl(product) → returns affiliate_url if
+  affiliate_status === 'approved' and affiliate_url is set, else direct_url
+- Every product card/CTA on every route (homepage, tools directory,
+  comparison pages, review pages, diagnostic result) must call this resolver
+- `internal_notes` / affiliate research comments must NEVER be rendered on
+  any public-facing page — admin/CMS view only
+- Log every outbound click via /api/click/[productId]
+
+═══════════════════════════════════════════════════════
+10. SEO GUARDRAILS
+═══════════════════════════════════════════════════════
+- No mass-generated near-identical pages (swapping only product names)
+- Every indexable page needs: original comparison/analysis, internal links,
+  structured data (Product/Review/FAQ schema where relevant), a "last
+  verified" date
+- sitemap.xml, robots.txt, and hreflang must cover every locale × every
+  indexable route — audit this specifically, it's commonly missed on
+  dynamic [slug] pages
+- No fake reviews/testimonials
+
+═══════════════════════════════════════════════════════
+11. MOBILE REQUIREMENTS
+═══════════════════════════════════════════════════════
+- Mobile-first from 360px width up; test at 360/390/430px
+- Tables become stacked cards or horizontal-scroll containers, never overflow
+- CTA touch targets ≥44px
+- Language switcher always reachable in nav
+- Arabic layout visually rebalanced on mobile, not just mirrored
+
+═══════════════════════════════════════════════════════
+12. COMMON MISTAKES TO AVOID (sub-pages specifically break often — check these)
+═══════════════════════════════════════════════════════
+- Do NOT hardcode slug lists in generateStaticParams — pull from Supabase
+- Do NOT mix static /en/ folders with the dynamic [locale] pattern
+- Do NOT reuse homepage metadata as a fallback on dynamic pages — every page
+  needs unique title/description/canonical/hreflang
+- Do NOT let Arabic sub-pages silently render blank/404 when a translation
+  row doesn't exist yet — show a clear "translation pending" state instead
+- Do NOT apply the email gate to guides/reviews/problem pages — only to
+  diagnostic-result and campaign pages
+- Do NOT let any product card bypass resolveMerchantUrl() with a raw link
+- Do NOT create duplicate lead rows for an email that already exists —
+  match and append a topic-touch instead
+- Do NOT publish internal_notes / affiliate research comments on any
+  public route
+
+═══════════════════════════════════════════════════════
+13. DEFINITION OF DONE
+═══════════════════════════════════════════════════════
+□ EN + AR both work; RTL verified on mobile at 360/390/430px
+□ /hub page correctly lists every guide/review/problem/compare page that
+  exists in Supabase — nothing orphaned
+□ Every [slug] dynamic route generates from Supabase data, not hardcoded
+□ All affiliate links route through resolveMerchantUrl(); zero hardcoded URLs
+□ Direct-only products remain visible/discoverable, just show a "Direct
+  link — no commission" badge to the user (internal_notes stays hidden)
+□ Diagnostic-result and campaign pages are gated; guides/reviews/problem
+  pages are NOT gated
+□ Returning lead (valid cookie) never sees the email gate again
+□ Duplicate email submissions merge into the existing lead row + new
+  topic-touch, never a duplicate lead
+□ New English content automatically produces a draft AR translation
+  (needs_review = true) without manual re-trigger
+□ sitemap/robots/hreflang present and correct across every locale × route
+□ Light background + emerald accent system throughout; zero blue anywhere;
+  no gradient-blob/glassmorphism-heavy "AI slop" look
+□ Lighthouse mobile performance checked before calling any page done
+```
+
+এইটা পুরো spec — Antigravity-কে দিলে ও পুরো architecture + design + routing rules + common-mistake guardrails একসাথে পাবে। বড় বলে সরাসরি এক শটে সব বানাতে বললে হয়তো মাঝপথে ভুল করবে — আমি suggest করব **section-wise ধাপে ধাপে দাও** (আগে design system + data model, তারপর routing/pages, তারপর lead system, তারপর SEO/i18n) — একবারে পুরো ৫০০০ শব্দ দিলে বড় models-ও মাঝেমধ্যে half implement করে ফেলে।
+
+আর কিছু লাগলে বলো।
