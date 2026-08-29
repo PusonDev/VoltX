@@ -52,21 +52,21 @@ html[data-theme="light"] {
 /* ─── 3. Full Black OLED Dark ─── */
 [data-theme="dark"],
 html[data-theme="dark"] {
-  --bg-page: #000000;
-  --card-bg: #0C0C0E;
-  --primary: #A855F7;
-  --primary-hover: #9333EA;
-  --primary-tint: #3B0764;
-  --primary-dark: #D8B4FE;
+  --bg-page: #0B0F0D; /* Near-black w/ slight green-black tint */
+  --card-bg: #121815;
+  --primary: #10B981; /* Emerald-500 */
+  --primary-hover: #34D399;
+  --primary-tint: #133024; /* Soft dark emerald tint */
+  --primary-dark: #6EE7B7;
 
-  --accent: #FBBF24;
+  --accent: #FBBF24; /* Micro-accent amber */
   --accent-hover: #F59E0B;
 
-  --surface: #050507;
-  --border: #27272A;
-  --text-primary: #F8FAFC;
-  --text-secondary: #A1A1AA;
-  --text-muted: #71717A;
+  --surface: #121815;
+  --border: #223029;
+  --text-primary: #F3F6F4;
+  --text-secondary: #9CA8A3;
+  --text-muted: #5E6C66;
 }
 
 @theme {

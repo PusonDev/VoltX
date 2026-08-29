@@ -28,6 +28,8 @@ export interface Product {
   editorial_score: number;
   fit_score: number;
   internal_notes: string | null; // NEVER render on public pages
+  setup_guide_en?: string[];
+  setup_guide_ar?: string[];
   created_at: string;
   updated_at: string;
 }

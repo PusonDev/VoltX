@@ -47,20 +47,23 @@ export default function Navbar() {
           </div>
 
           {/* Desktop actions */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
-            <Button variant="primary" size="sm" href={`/${locale}/diagnostic`}>
-              {t("diagnostic")}
-            </Button>
+            <div className="ml-2">
+              <Button variant="primary" size="sm" href={`/${locale}/diagnostic`}>
+                {t("diagnostic")}
+              </Button>
+            </div>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
             <ThemeToggle />
+            <LanguageSwitcher />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="p-2 rounded-lg hover:bg-surface text-text-primary transition-colors"
+              className="p-2 flex items-center justify-center w-10 h-10 rounded-lg bg-surface border border-border text-text-primary hover:border-primary transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
               aria-expanded={mobileOpen}
               aria-label="Toggle menu"
             >
@@ -95,9 +98,8 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
-            <div className="pt-3 border-t border-border flex items-center justify-between gap-3">
-              <LanguageSwitcher />
-              <Button variant="primary" size="sm" href={`/${locale}/diagnostic`} className="w-full">
+            <div className="pt-3 border-t border-border flex items-center justify-between gap-3 px-3">
+              <Button variant="primary" size="sm" fullWidth href={`/${locale}/diagnostic`}>
                 {t("diagnostic")}
               </Button>
             </div>

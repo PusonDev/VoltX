@@ -62,11 +62,12 @@
     "recommendedSolutions": "Recommended Solutions",
     "recommendedSolutionsSubtitle": "Products ranked by fit score for this specific challenge — not by commission.",
     "finalizingRecommendation": "We're finalizing our recommendation for this challenge",
-    "finalizingRecommendationDesc": "We only feature tools we have personally verified with confirmed, accessible partner programs. Check back soon."
+    "finalizingRecommendationDesc": "We only feature tools we have personally verified with confirmed, accessible partner programs. Check back soon.",
+    "setupIn5Mins": "Setup in 5 Minutes"
   },
   "home": {
-    "heroTitle": "Stop guessing.\nStart protecting your business.",
-    "heroSubtitle": "Answer a few questions about your business. Get fitted cybersecurity recommendations — not a generic product list.",
+    "heroTitle": "Stop worrying about hacks and lost data.",
+    "heroSubtitle": "Find the right tools for your business in 60 seconds. No IT background needed.",
     "heroCta": "Take the Free Diagnostic",
     "heroSecondary": "Browse All Tools",
     "problemsTitle": "What challenge are you facing?",

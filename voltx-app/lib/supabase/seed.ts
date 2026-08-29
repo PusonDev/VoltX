@@ -45,6 +45,18 @@ export const seedProducts: Product[] = [
     editorial_score: 9.2,
     fit_score: 9.5,
     internal_notes: "Apply via Impact. 25% recurring commission.",
+    setup_guide_en: [
+      "1. Create admin account and set up a master team password.",
+      "2. Invite members via email from the admin console.",
+      "3. Enable 2FA enforcement org-wide.",
+      "4. Create shared vaults for common team logins."
+    ],
+    setup_guide_ar: [
+      "[AR-DRAFT] 1. Create admin account and set up a master team password.",
+      "[AR-DRAFT] 2. Invite members via email from the admin console.",
+      "[AR-DRAFT] 3. Enable 2FA enforcement org-wide.",
+      "[AR-DRAFT] 4. Create shared vaults for common team logins."
+    ],
     created_at: "2026-01-10T00:00:00Z",
     updated_at: "2026-08-15T00:00:00Z",
   },
@@ -73,6 +85,18 @@ export const seedProducts: Product[] = [
     editorial_score: 8.1,
     fit_score: 8.4,
     internal_notes: "Flat $40 per sale via CJ.",
+    setup_guide_en: [
+      "1. Sign up for the business plan and access the Admin Panel.",
+      "2. Invite your team using their work emails.",
+      "3. Import existing company passwords via CSV or browser.",
+      "4. Turn on the Data Breach Scanner to check for exposed accounts."
+    ],
+    setup_guide_ar: [
+      "[AR-DRAFT] 1. Sign up for the business plan and access the Admin Panel.",
+      "[AR-DRAFT] 2. Invite your team using their work emails.",
+      "[AR-DRAFT] 3. Import existing company passwords via CSV or browser.",
+      "[AR-DRAFT] 4. Turn on the Data Breach Scanner to check for exposed accounts."
+    ],
     created_at: "2026-02-05T00:00:00Z",
     updated_at: "2026-08-10T00:00:00Z",
   },
@@ -101,6 +125,18 @@ export const seedProducts: Product[] = [
     editorial_score: 8.3,
     fit_score: 8.0,
     internal_notes: "40% recurring via ShareASale.",
+    setup_guide_en: [
+      "1. Purchase the team plan and login to the dashboard.",
+      "2. Send VPN download links to your remote staff.",
+      "3. Instruct staff to connect before accessing internal tools.",
+      "4. (Optional) Configure a dedicated IP for secure server access."
+    ],
+    setup_guide_ar: [
+      "[AR-DRAFT] 1. Purchase the team plan and login to the dashboard.",
+      "[AR-DRAFT] 2. Send VPN download links to your remote staff.",
+      "[AR-DRAFT] 3. Instruct staff to connect before accessing internal tools.",
+      "[AR-DRAFT] 4. (Optional) Configure a dedicated IP for secure server access."
+    ],
     created_at: "2026-03-01T00:00:00Z",
     updated_at: "2026-08-18T00:00:00Z",
   },
@@ -129,6 +165,18 @@ export const seedProducts: Product[] = [
     editorial_score: 8.5,
     fit_score: 8.7,
     internal_notes: "Application at CJ. 20% commission.",
+    setup_guide_en: [
+      "1. Log into the Nebula cloud console.",
+      "2. Download the endpoint agent installer for Windows/Mac.",
+      "3. Deploy the agent to employee laptops (or email them the link).",
+      "4. Set up automatic daily scans in the default policy."
+    ],
+    setup_guide_ar: [
+      "[AR-DRAFT] 1. Log into the Nebula cloud console.",
+      "[AR-DRAFT] 2. Download the endpoint agent installer for Windows/Mac.",
+      "[AR-DRAFT] 3. Deploy the agent to employee laptops (or email them the link).",
+      "[AR-DRAFT] 4. Set up automatic daily scans in the default policy."
+    ],
     created_at: "2026-02-20T00:00:00Z",
     updated_at: "2026-07-25T00:00:00Z",
   },

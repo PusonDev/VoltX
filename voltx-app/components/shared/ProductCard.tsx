@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -24,6 +25,9 @@ export default function ProductCard({
   const t = useTranslations("common");
   const locale = useLocale();
   const merchantUrl = resolveMerchantUrl(product);
+  
+  const [guideOpen, setGuideOpen] = useState(false);
+  const setupGuide = locale === "ar" ? product.setup_guide_ar : product.setup_guide_en;
 
   const handleClick = async () => {
     // Log click via API
@@ -149,6 +153,41 @@ export default function ProductCard({
             day: "numeric",
           })}
         </p>
+      )}
+
+      {/* Setup Guide Expander */}
+      {setupGuide && setupGuide.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-border">
+          <button
+            onClick={() => setGuideOpen(!guideOpen)}
+            className="flex items-center justify-between w-full text-sm font-medium text-text-secondary hover:text-primary transition-colors"
+          >
+            <span className="flex items-center gap-1.5">
+              <span>⏱️</span> {t("setupIn5Mins", { defaultMessage: "Setup in 5 Minutes" })}
+            </span>
+            <svg
+              className={`w-4 h-4 transition-transform ${guideOpen ? "rotate-180" : ""}`}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+          
+          {guideOpen && (
+            <div className="mt-3 space-y-2 bg-surface p-3 rounded-lg border border-border">
+              {setupGuide.map((step, idx) => (
+                <p key={idx} className="text-sm text-text-secondary leading-relaxed">
+                  {step}
+                </p>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </Card>
   );
