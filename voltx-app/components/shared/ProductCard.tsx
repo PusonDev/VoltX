@@ -112,7 +112,7 @@ export default function ProductCard({
       <a
         href={merchantUrl}
         target="_blank"
-        rel="noopener noreferrer"
+        rel="noopener noreferrer nofollow sponsored"
         onClick={handleClick}
         className="
           w-full inline-flex items-center justify-center

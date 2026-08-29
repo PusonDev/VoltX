@@ -34,9 +34,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { email, marketing_consent, topic_slug, page_type, source } = body;
 
-    if (!email || !email.includes("@")) {
-      return NextResponse.json({ error: "Invalid email" }, { status: 400 });
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!email || typeof email !== "string" || !emailRegex.test(email.trim())) {
+      return NextResponse.json({ error: "Please provide a valid email address" }, { status: 400 });
     }
+
+    const cleanEmail = email.trim().toLowerCase();
 
     // Generate a unique lead ID (in production, this would be from Supabase)
     const leadId = crypto.randomUUID();
