@@ -100,13 +100,13 @@ export default function DiagnosticPage() {
         {/* Progress bar */}
         <div className="mt-10 mb-8">
           <div className="flex items-center justify-between mb-2">
-            <p className="text-sm font-medium text-text-secondary">
+            <p className="text-sm font-semibold text-text-secondary">
               {t("stepOf", { current: (step + 1).toString(), total: totalSteps.toString() })}
             </p>
           </div>
-          <div className="h-2 bg-surface rounded-full overflow-hidden">
+          <div className="h-2.5 bg-surface border border-border rounded-full overflow-hidden">
             <div
-              className="h-full bg-primary rounded-full transition-all duration-500"
+              className="h-full bg-primary rounded-full transition-all duration-500 shadow-sm"
               style={{ width: `${((step + 1) / totalSteps) * 100}%` }}
             />
           </div>
@@ -114,21 +114,21 @@ export default function DiagnosticPage() {
 
         {/* Step 1: Business Info */}
         {step === 0 && (
-          <Card hover={false}>
+          <Card hover={false} padding="lg">
             <h2 className="text-xl font-bold text-text-primary mb-6">{t("step1Title")}</h2>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step1Q1")}</label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step1Q1")}</label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                   {industries.map((ind) => (
                     <button
                       key={ind}
                       onClick={() => setAnswers((prev) => ({ ...prev, industry: ind }))}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-medium border transition-all min-h-[44px]
+                      className={`px-4 py-3 rounded-xl text-sm font-medium border transition-all duration-200 min-h-[46px] cursor-pointer
                         ${answers.industry === ind
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary text-white border-primary shadow-md shadow-primary/25 font-bold"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
                       {getOptionLabel(ind)}
@@ -138,16 +138,16 @@ export default function DiagnosticPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step1Q2")}</label>
-                <div className="flex flex-wrap gap-2">
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step1Q2")}</label>
+                <div className="flex flex-wrap gap-2.5">
                   {teamSizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setAnswers((prev) => ({ ...prev, teamSize: size }))}
-                      className={`px-5 py-2.5 rounded-lg text-sm font-medium border transition-all min-h-[44px]
+                      className={`px-5 py-3 rounded-xl text-sm font-medium border transition-all duration-200 min-h-[46px] cursor-pointer
                         ${answers.teamSize === size
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary text-white border-primary shadow-md shadow-primary/25 font-bold"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
                       {size}
@@ -161,43 +161,49 @@ export default function DiagnosticPage() {
 
         {/* Step 2: Current Security */}
         {step === 1 && (
-          <Card hover={false}>
+          <Card hover={false} padding="lg">
             <h2 className="text-xl font-bold text-text-primary mb-6">{t("step2Title")}</h2>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step2Q1")}</label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step2Q1")}</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {currentTools.map((tool) => (
                     <button
                       key={tool}
                       onClick={() => toggleArray("currentTools", tool)}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-medium border transition-all text-start min-h-[44px]
+                      className={`px-4 py-3 rounded-xl text-sm font-medium border transition-all duration-200 text-start min-h-[46px] cursor-pointer flex items-center justify-between
                         ${answers.currentTools.includes(tool)
-                          ? "bg-primary-tint text-primary-dark border-primary/30"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary-tint text-primary-dark border-primary/50 font-bold shadow-sm"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
-                      {answers.currentTools.includes(tool) ? "✓ " : ""}{getOptionLabel(tool)}
+                      <span>{getOptionLabel(tool)}</span>
+                      {answers.currentTools.includes(tool) && (
+                        <span className="text-primary font-bold text-base">✓</span>
+                      )}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step2Q2")}</label>
-                <div className="flex flex-wrap gap-2">
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step2Q2")}</label>
+                <div className="flex flex-wrap gap-2.5">
                   {devices.map((device) => (
                     <button
                       key={device}
                       onClick={() => toggleArray("devices", device)}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-medium border transition-all min-h-[44px]
+                      className={`px-4 py-3 rounded-xl text-sm font-medium border transition-all duration-200 min-h-[46px] cursor-pointer flex items-center gap-2
                         ${answers.devices.includes(device)
-                          ? "bg-primary-tint text-primary-dark border-primary/30"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary-tint text-primary-dark border-primary/50 font-bold shadow-sm"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
-                      {answers.devices.includes(device) ? "✓ " : ""}{device}
+                      <span>{device}</span>
+                      {answers.devices.includes(device) && (
+                        <span className="text-primary font-bold">✓</span>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -208,40 +214,43 @@ export default function DiagnosticPage() {
 
         {/* Step 3: Concerns */}
         {step === 2 && (
-          <Card hover={false}>
+          <Card hover={false} padding="lg">
             <h2 className="text-xl font-bold text-text-primary mb-6">{t("step3Title")}</h2>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step3Q1")}</label>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step3Q1")}</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {concerns.map((concern) => (
                     <button
                       key={concern}
                       onClick={() => toggleArray("concerns", concern)}
-                      className={`px-4 py-2.5 rounded-lg text-sm font-medium border transition-all text-start min-h-[44px]
+                      className={`px-4 py-3 rounded-xl text-sm font-medium border transition-all duration-200 text-start min-h-[46px] cursor-pointer flex items-center justify-between
                         ${answers.concerns.includes(concern)
-                          ? "bg-primary-tint text-primary-dark border-primary/30"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary-tint text-primary-dark border-primary/50 font-bold shadow-sm"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
-                      {answers.concerns.includes(concern) ? "✓ " : ""}{getOptionLabel(concern)}
+                      <span>{getOptionLabel(concern)}</span>
+                      {answers.concerns.includes(concern) && (
+                        <span className="text-primary font-bold text-base">✓</span>
+                      )}
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-3">{t("step3Q2")}</label>
+                <label className="block text-sm font-semibold text-text-primary mb-3">{t("step3Q2")}</label>
                 <div className="flex gap-3">
                   {["Yes", "No", "Not sure"].map((opt) => (
                     <button
                       key={opt}
                       onClick={() => setAnswers((prev) => ({ ...prev, hadIncident: opt }))}
-                      className={`px-5 py-2.5 rounded-lg text-sm font-medium border transition-all min-h-[44px]
+                      className={`px-6 py-3 rounded-xl text-sm font-medium border transition-all duration-200 min-h-[46px] cursor-pointer
                         ${answers.hadIncident === opt
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-text-secondary border-border hover:border-primary/30"
+                          ? "bg-primary text-white border-primary shadow-md shadow-primary/25 font-bold"
+                          : "bg-surface text-text-primary border-border hover:border-primary/40 hover:bg-primary-tint/30"
                         }`}
                     >
                       {getOptionLabel(opt)}
