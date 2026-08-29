@@ -32,7 +32,7 @@ export default async function LocaleLayout({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   return (
-    <html lang={locale} dir={dir} className={GeistSans.className} data-theme="light" suppressHydrationWarning>
+    <html lang={locale} dir={dir} className={GeistSans.className} data-theme="purple" suppressHydrationWarning>
       <head>
         {/* Hreflang alternates for homepage — individual pages add their own */}
         <link rel="alternate" hrefLang="en" href={`${siteUrl}/en`} />

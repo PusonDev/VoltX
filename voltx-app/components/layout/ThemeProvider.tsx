@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
-export type Theme = "light" | "purple" | "dark";
+export type Theme = "purple" | "light" | "dark";
 
 interface ThemeContextType {
   theme: Theme;
@@ -13,20 +13,20 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>("purple");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     try {
       const savedTheme = localStorage.getItem("voltx-theme") as Theme;
-      if (savedTheme && ["light", "purple", "dark"].includes(savedTheme)) {
+      if (savedTheme && ["purple", "light", "dark"].includes(savedTheme)) {
         setThemeState(savedTheme);
         document.documentElement.setAttribute("data-theme", savedTheme);
       } else {
-        document.documentElement.setAttribute("data-theme", "light");
+        document.documentElement.setAttribute("data-theme", "purple");
       }
     } catch {
-      document.documentElement.setAttribute("data-theme", "light");
+      document.documentElement.setAttribute("data-theme", "purple");
     }
     setMounted(true);
   }, []);
@@ -42,9 +42,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleTheme = () => {
-    // Cycle: light -> purple -> dark -> light
+    // Cycle: purple -> light -> dark -> purple
     const nextTheme: Theme =
-      theme === "light" ? "purple" : theme === "purple" ? "dark" : "light";
+      theme === "purple" ? "light" : theme === "light" ? "dark" : "purple";
     setTheme(nextTheme);
   };
 

@@ -75,7 +75,7 @@ export default function HomePage() {
             <div className="md:col-span-5 md:mt-12">
               <ScrollReveal delay={300}>
                 <div className="relative">
-                  <div className="bg-white border border-border rounded-2xl p-6 shadow-xl shadow-primary/5">
+                  <div className="bg-card-bg border border-border rounded-2xl p-6 shadow-xl shadow-primary/5">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-10 h-10 rounded-full bg-primary-tint flex items-center justify-center">
                         <span className="text-primary text-lg">🛡️</span>
@@ -251,7 +251,7 @@ export default function HomePage() {
             {[t("trust1"), t("trust2"), t("trust3"), t("trust4")].map(
               (item, i) => (
                 <ScrollReveal key={i} delay={i * 100}>
-                  <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-border">
+                  <div className="flex items-start gap-4 p-4 bg-card-bg rounded-lg border border-border">
                     <div className="w-6 h-6 rounded-full bg-primary flex-shrink-0 flex items-center justify-center mt-0.5">
                       <svg
                         width="14"

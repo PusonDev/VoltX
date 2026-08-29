@@ -124,7 +124,7 @@ export default async function ProblemPage({ params }: { params: Promise<{ locale
             </>
           ) : (
             <ScrollReveal>
-              <div className="max-w-xl mx-auto text-center py-12 px-6 bg-white rounded-2xl border border-border">
+              <div className="max-w-xl mx-auto text-center py-12 px-6 bg-card-bg rounded-2xl border border-border">
                 <div className="w-12 h-12 rounded-full bg-primary-tint flex items-center justify-center mx-auto mb-4">
                   <span className="text-primary text-xl">🛡️</span>
                 </div>

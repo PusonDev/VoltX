@@ -109,7 +109,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ locale:
           {/* Pros & Cons */}
           <ScrollReveal delay={150}>
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
-              <div className="p-5 bg-white rounded-xl border border-border">
+              <div className="p-5 bg-card-bg rounded-xl border border-border">
                 <h3 className="font-bold text-primary mb-3">✓ {tr("pros")}</h3>
                 <ul className="space-y-2">
                   {review.pros.map((pro, i) => (
@@ -120,7 +120,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ locale:
                   ))}
                 </ul>
               </div>
-              <div className="p-5 bg-white rounded-xl border border-border">
+              <div className="p-5 bg-card-bg rounded-xl border border-border">
                 <h3 className="font-bold text-red-600 mb-3">✗ {tr("cons")}</h3>
                 <ul className="space-y-2">
                   {review.cons.map((con, i) => (

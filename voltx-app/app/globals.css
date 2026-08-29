@@ -6,7 +6,7 @@
   --font-headline: "Geist", "Inter", system-ui, -apple-system, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
 
-  /* ─── Colors mapping to CSS Variables for 3 Themes ─── */
+  /* ─── Dynamic Colors mapping to CSS Variables for 3 Themes ─── */
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-tint: var(--primary-tint);
@@ -25,12 +25,32 @@
 
 /* ═══════════════════════════════════════
    THEME DEFINITIONS (3 THEMES)
-   1. Light (Default - Emerald / Clean Slate)
-   2. Purple (Light Beguni / Violet / Soft Lavender)
-   3. Dark (Full Black / OLED Minimal Dark)
+   1. Purple / Light Beguni (NOW DEFAULT 🔮)
+   2. Light / Emerald Clean (☀️)
+   3. Full Black / OLED Minimal Dark (🌙)
    ═══════════════════════════════════════ */
 
+/* ─── 1. Light Beguni / Purple Theme (DEFAULT) ─── */
 :root,
+[data-theme="purple"] {
+  --bg-page: #F5EEFF; /* Visible, rich, gorgeous light beguni / soft violet canvas */
+  --card-bg: #FFFFFF; /* Crisp clean white cards for contrast */
+  --primary: #7C3AED; /* Deep, vivid violet/purple */
+  --primary-hover: #6D28D9;
+  --primary-tint: #EDE9FE; /* Soft purple tint */
+  --primary-dark: #4C1D95; /* High contrast text on purple tint */
+
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+
+  --surface: #EFEBFF; /* Distinctive light purple surface section bg */
+  --border: #DDD6FE; /* Clear, elegant soft purple border */
+  --text-primary: #1E1B4B; /* Very rich deep violet-slate */
+  --text-secondary: #4C1D95; /* Visible purple-slate secondary text */
+  --text-muted: #7C3AED; /* Clear muted violet */
+}
+
+/* ─── 2. Light Emerald Theme ─── */
 [data-theme="light"] {
   --bg-page: #FFFFFF;
   --card-bg: #FFFFFF;
@@ -49,41 +69,22 @@
   --text-muted: #94A3B8;
 }
 
-/* ─── 2. Light Beguni (Purple / Lavender Theme) ─── */
-[data-theme="purple"] {
-  --bg-page: #FAF5FF; /* soft light lavender page bg */
-  --card-bg: #FFFFFF;
-  --primary: #7C3AED; /* vivid purple primary */
-  --primary-hover: #6D28D9;
-  --primary-tint: #F3E8FF; /* light beguni tint */
-  --primary-dark: #5B21B6;
-
-  --accent: #F59E0B;
-  --accent-hover: #D97706;
-
-  --surface: #F5F3FF; /* subtle lavender-surface */
-  --border: #E9D5FF; /* soft violet border */
-  --text-primary: #1E1B4B; /* deep rich violet-black */
-  --text-secondary: #4C1D95;
-  --text-muted: #8B5CF6;
-}
-
-/* ─── 3. Full Black (OLED Dark Mode) ─── */
+/* ─── 3. Full Black Dark Mode ─── */
 [data-theme="dark"] {
-  --bg-page: #000000; /* Pure deep black */
-  --card-bg: #09090B; /* Deep dark surface */
-  --primary: #10B981; /* High-contrast bright emerald */
-  --primary-hover: #059669;
-  --primary-tint: #064E3B; /* deep emerald glow */
-  --primary-dark: #34D399;
+  --bg-page: #000000; /* Pure deep OLED black */
+  --card-bg: #0C0C0E; /* Deep dark sleek card surface */
+  --primary: #A855F7; /* Glowing vibrant purple accent for dark mode */
+  --primary-hover: #9333EA;
+  --primary-tint: #3B0764; /* Deep glowing tint */
+  --primary-dark: #D8B4FE;
 
   --accent: #FBBF24;
   --accent-hover: #F59E0B;
 
-  --surface: #0A0A0C; /* very dark zinc/black */
-  --border: #27272A; /* dark crisp border */
-  --text-primary: #F8FAFC; /* crisp clean white */
-  --text-secondary: #A1A1AA; /* readable light muted */
+  --surface: #050507; /* Super deep dark section surface */
+  --border: #27272A; /* Crisp zinc border */
+  --text-primary: #F8FAFC; /* Crisp clean white */
+  --text-secondary: #A1A1AA; /* Balanced readable gray */
   --text-muted: #71717A;
 }
 

@@ -10,10 +10,10 @@ interface BadgeProps {
 
 const variantClasses: Record<BadgeVariant, string> = {
   default: "bg-surface text-text-secondary border border-border",
-  success: "bg-primary-tint text-primary-dark",
-  warning: "bg-amber-50 text-amber-800",
-  info: "bg-slate-100 text-slate-700",
-  direct: "bg-slate-50 text-slate-600 border border-slate-200",
+  success: "bg-primary-tint text-primary-dark font-medium",
+  warning: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20",
+  info: "bg-primary-tint/60 text-primary-dark border border-primary/20",
+  direct: "bg-surface text-text-muted border border-border",
 };
 
 export default function Badge({
@@ -25,7 +25,7 @@ export default function Badge({
     <span
       className={`
         inline-flex items-center gap-1 px-2.5 py-0.5
-        text-xs font-medium rounded-full
+        text-xs font-medium rounded-full transition-colors
         ${variantClasses[variant]}
         ${className}
       `}
