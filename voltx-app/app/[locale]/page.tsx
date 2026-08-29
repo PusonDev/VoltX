@@ -153,9 +153,9 @@ export default function HomePage() {
                         <p className="mt-2 text-sm text-text-secondary leading-relaxed">
                           {problem.short_description}
                         </p>
-                        <div className="mt-3 flex items-center gap-4 text-xs text-text-muted">
-                          <span>Urgency: {problem.urgency_score}/10</span>
-                          <span>Intent: {problem.buyer_intent_score}/10</span>
+                        <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-primary">
+                          <span>{tc("exploreProblems")}</span>
+                          <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
                         </div>
                       </div>
                     </div>
