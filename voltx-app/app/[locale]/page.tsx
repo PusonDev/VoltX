@@ -2,11 +2,15 @@ import { useTranslations, useLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import ScrollReveal from "@/components/shared/ScrollReveal";
-import { getProblems } from "@/lib/supabase/seed";
+import VisualHero from "@/components/home/VisualHero";
+import LiveThreatSimulator from "@/components/home/LiveThreatSimulator";
+import ProductCard from "@/components/shared/ProductCard";
+import { getProblems, getProducts } from "@/lib/supabase/seed";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -31,157 +35,184 @@ export default function HomePage() {
   const t = useTranslations("home");
   const tc = useTranslations("common");
   const locale = useLocale();
+  const isAr = locale === "ar";
   const problems = getProblems(locale);
+  const approvedProducts = getProducts(locale, false);
 
   return (
     <>
-      {/* ═══════ HERO — Asymmetric Layout ═══════ */}
-      <section className="relative overflow-hidden pt-20 pb-28 md:pt-28 md:pb-36">
-        {/* Subtle background pattern — NOT a gradient blob */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 end-0 w-96 h-96 bg-primary-tint rounded-full opacity-40 blur-3xl" />
-          <div className="absolute bottom-10 start-10 w-48 h-48 bg-amber-50 rounded-full opacity-30 blur-2xl" />
-        </div>
+      {/* ═══════ 1. HIGH-IMPACT 3D VISUAL HERO ═══════ */}
+      <VisualHero />
 
-        <Container size="wide" className="relative">
-          <div className="grid md:grid-cols-12 gap-8 items-center">
-            {/* Text — takes 7 columns, intentionally NOT centered */}
-            <div className="md:col-span-7">
-              <ScrollReveal>
-                <h1 className="text-text-primary whitespace-pre-line">
-                  {t("heroTitle")}
-                </h1>
-              </ScrollReveal>
-
-              <ScrollReveal delay={100}>
-                <p className="mt-6 text-lg text-text-secondary max-w-xl leading-relaxed">
-                  {t("heroSubtitle")}
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal delay={200}>
-                <div className="mt-8 flex flex-wrap gap-4">
-                  <Button size="lg" href={`/${locale}/diagnostic`}>
-                    {t("heroCta")}
-                  </Button>
-                  <Button variant="outline" size="lg" href={`/${locale}/tools`}>
-                    {t("heroSecondary")}
-                  </Button>
-                </div>
-              </ScrollReveal>
-            </div>
-
-            {/* Visual — takes 5 columns, offset for asymmetry */}
-            <div className="md:col-span-5 md:mt-12">
-              <ScrollReveal delay={300}>
-                <div className="relative">
-                  <div className="bg-card-bg border border-border rounded-2xl p-6 shadow-xl shadow-primary/5">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-primary-tint flex items-center justify-center">
-                        <span className="text-primary text-lg">🛡️</span>
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-text-primary">
-                          Security Diagnostic
-                        </p>
-                        <p className="text-xs text-text-muted">
-                          2 min · personalized results
-                        </p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      {["Password Management", "Network Security", "Endpoint Protection"].map(
-                        (item, i) => (
-                          <div
-                            key={item}
-                            className="flex items-center gap-3 p-2.5 rounded-lg bg-surface"
-                          >
-                            <div
-                              className={`w-2 h-2 rounded-full ${
-                                i === 0
-                                  ? "bg-primary"
-                                  : i === 1
-                                  ? "bg-accent"
-                                  : "bg-border"
-                              }`}
-                            />
-                            <span className="text-sm text-text-primary">{item}</span>
-                            <span className="ms-auto text-xs text-text-muted">
-                              {i === 0 ? "High" : i === 1 ? "Medium" : "Check"}
-                            </span>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                  {/* Offset decorative card behind */}
-                  <div className="absolute -bottom-3 -end-3 -z-10 w-full h-full bg-primary-tint rounded-2xl border border-primary/10" />
-                </div>
-              </ScrollReveal>
-            </div>
-          </div>
-        </Container>
-      </section>
-
-      {/* ═══════ PROBLEMS SECTION ═══════ */}
-      <section className="py-20 bg-surface">
-        <Container>
+      {/* ═══════ 2. LIVE INTERACTIVE THREAT SIMULATOR ═══════ */}
+      <section className="py-12 md:py-16 bg-surface/50 border-y border-border/60 relative">
+        <Container size="wide">
           <ScrollReveal>
-            <div className="max-w-2xl">
-              <h2 className="text-text-primary">{t("problemsTitle")}</h2>
-              <p className="mt-4 text-text-secondary text-lg">
-                {t("problemsSubtitle")}
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-tint/70 text-primary-dark text-xs font-bold uppercase tracking-wider mb-3">
+                <span>⚡</span> {isAr ? "فحص فوري تفاعلي" : "Instant Interactive Risk Simulator"}
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-text-primary">
+                {isAr ? "ما هو أكبر تهديد يواجه عملك اليوم؟" : "What is Your Biggest Cyber Threat Today?"}
+              </h2>
+              <p className="mt-3 text-text-secondary text-base">
+                {isAr
+                  ? "اختر وضع فريقك وشاهد تقييم المخاطر المباشر والحل الموصى به فورًا."
+                  : "Click your current operational setup to simulate exposure and get an immediate fitted solution."}
               </p>
             </div>
           </ScrollReveal>
 
-          <div className="mt-12 grid sm:grid-cols-2 gap-5">
-            {problems.map((problem, i) => (
-              <ScrollReveal key={problem.id} delay={i * 100}>
-                <Link href={`/${locale}/problems/${problem.slug}`} className="block h-full">
-                  <Card className="h-full group cursor-pointer">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-primary-tint flex-shrink-0 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-                        <span className="text-primary group-hover:text-white text-lg">
-                          {i === 0 ? "🔑" : i === 1 ? "🌐" : i === 2 ? "🔒" : "🧭"}
-                        </span>
-                      </div>
-                      <div>
-                        <h3 className="text-base font-bold text-text-primary group-hover:text-primary transition-colors">
-                          {problem.title}
-                        </h3>
-                        <p className="mt-2 text-sm text-text-secondary leading-relaxed">
-                          {problem.short_description}
-                        </p>
-                        <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-primary">
-                          <span>{tc("exploreProblems")}</span>
-                          <span className="text-xs transition-transform group-hover:translate-x-1">→</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                </Link>
-              </ScrollReveal>
-            ))}
-          </div>
-
-          <ScrollReveal delay={400}>
-            <div className="mt-8 text-center">
-              <Button variant="outline" href={`/${locale}/problems`}>
-                {tc("exploreProblems")}
-              </Button>
-            </div>
+          <ScrollReveal delay={100}>
+            <LiveThreatSimulator />
           </ScrollReveal>
         </Container>
       </section>
 
-      {/* ═══════ HOW IT WORKS — Editorial list, NOT cards ═══════ */}
-      <section className="py-24">
+      {/* ═══════ 3. SECURITY CHALLENGES + 3D RADAR VISUAL ═══════ */}
+      <section className="py-20 bg-surface">
+        <Container size="wide">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            {/* Left: Problems Grid */}
+            <div className="lg:col-span-7 space-y-6">
+              <ScrollReveal>
+                <div className="max-w-xl">
+                  <span className="text-xs font-bold text-primary tracking-wider uppercase">
+                    {isAr ? "تحديات الأمان الحقيقية" : "Real-World Cyber Hazards"}
+                  </span>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-text-primary mt-2">
+                    {t("problemsTitle")}
+                  </h2>
+                  <p className="mt-3 text-text-secondary text-base leading-relaxed">
+                    {t("problemsSubtitle")}
+                  </p>
+                </div>
+              </ScrollReveal>
+
+              <div className="grid sm:grid-cols-2 gap-4 mt-6">
+                {problems.map((problem, i) => (
+                  <ScrollReveal key={problem.id} delay={i * 80}>
+                    <Link href={`/${locale}/problems/${problem.slug}`} className="block h-full">
+                      <Card className="h-full group cursor-pointer border-border hover:border-primary/60 transition-all duration-300">
+                        <div className="flex items-start gap-3.5">
+                          <div className="w-10 h-10 rounded-xl bg-primary-tint flex-shrink-0 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-sm">
+                            <span className="text-primary group-hover:text-white text-lg">
+                              {i === 0 ? "🔑" : i === 1 ? "🌐" : i === 2 ? "🔒" : "🧭"}
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="text-base font-bold text-text-primary group-hover:text-primary transition-colors">
+                              {problem.title}
+                            </h3>
+                            <p className="mt-1.5 text-xs text-text-secondary line-clamp-2 leading-relaxed">
+                              {problem.short_description}
+                            </p>
+                            <div className="mt-3 flex items-center gap-1.5 text-xs font-bold text-primary">
+                              <span>{tc("exploreProblems")}</span>
+                              <span className="text-xs transition-transform group-hover:translate-x-1 flip-rtl">→</span>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </Link>
+                  </ScrollReveal>
+                ))}
+              </div>
+
+              <ScrollReveal delay={300}>
+                <div className="pt-2">
+                  <Button variant="outline" href={`/${locale}/problems`}>
+                    {tc("exploreProblems")}
+                    <span className="ms-2 flip-rtl">→</span>
+                  </Button>
+                </div>
+              </ScrollReveal>
+            </div>
+
+            {/* Right: 3D Threat Radar Visual & Trust Matrix */}
+            <div className="lg:col-span-5">
+              <ScrollReveal delay={200}>
+                <div className="relative rounded-2xl overflow-hidden border border-border shadow-2xl glow-border">
+                  <Image
+                    src="/threat-radar.jpg"
+                    alt="VoltX Threat Radar Matrix"
+                    width={640}
+                    height={480}
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card-bg/95 via-card-bg/40 to-transparent p-6 flex flex-col justify-end">
+                    <span className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-primary text-white text-xs font-bold w-fit mb-2">
+                      <span>🛡️</span> {isAr ? "حماية استباقية" : "Zero-Trust Architecture"}
+                    </span>
+                    <h4 className="text-lg font-bold text-text-primary">
+                      {isAr ? "مصفوفة الحماية المعتمدة 2026" : "Continuous Vulnerability Mitigation"}
+                    </h4>
+                    <p className="text-xs text-text-secondary mt-1">
+                      {isAr
+                        ? "نحلل برامج الأمان لنضمن حماية كاملة دون إبطاء أجهزة موظفيك."
+                        : "Every tool independently verified against real-world breach and ransomware vectors."}
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* ═══════ 4. FEATURED VERIFIED SECURITY STACKS ═══════ */}
+      {approvedProducts.length > 0 && (
+        <section className="py-20">
+          <Container size="wide">
+            <ScrollReveal>
+              <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+                <div>
+                  <span className="text-xs font-bold text-primary tracking-wider uppercase">
+                    {isAr ? "أدوات تم التحقق منها" : "Verified Partner Products"}
+                  </span>
+                  <h2 className="text-3xl font-extrabold text-text-primary mt-2">
+                    {isAr ? "الأدوات الأكثر ملاءمة للشركات الصغيرة" : "Battle-Tested Tools for Teams"}
+                  </h2>
+                  <p className="mt-2 text-text-secondary text-base max-w-xl">
+                    {isAr
+                      ? "أدوات أمان تم فحصها واعتمادها رسميًا — مصممة للعمل الفوري بدون تعقيدات."
+                      : "Verified zero-knowledge password vaults and endpoint defense ready for instant team adoption."}
+                  </p>
+                </div>
+
+                <Button variant="outline" href={`/${locale}/tools`}>
+                  {t("heroSecondary")}
+                  <span className="ms-2 flip-rtl">→</span>
+                </Button>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {approvedProducts.map((product, i) => (
+                <ScrollReveal key={product.id} delay={i * 100}>
+                  <ProductCard
+                    product={product}
+                    segmentLabel={i === 0 ? tc("bestMatch") : tc("bestValue")}
+                    pageSlug="home-featured"
+                    placement="home"
+                  />
+                </ScrollReveal>
+              ))}
+            </div>
+          </Container>
+        </section>
+      )}
+
+      {/* ═══════ 5. HOW IT WORKS ═══════ */}
+      <section className="py-24 bg-surface/60 border-t border-border">
         <Container>
           <div className="grid md:grid-cols-12 gap-12 items-start">
             <div className="md:col-span-4">
               <ScrollReveal>
-                <h2 className="text-text-primary sticky top-24">
+                <span className="text-xs font-bold text-primary tracking-wider uppercase">
+                  {isAr ? "خطوات بسيطة" : "Simple 3-Step Process"}
+                </span>
+                <h2 className="text-3xl font-extrabold text-text-primary mt-2 sticky top-24">
                   {t("howItWorksTitle")}
                 </h2>
                 <p className="mt-4 text-text-secondary">
@@ -218,7 +249,7 @@ export default function HomePage() {
                     }`}
                   >
                     <div className="flex-shrink-0">
-                      <span className="font-headline text-4xl font-bold text-primary/20">
+                      <span className="font-headline text-4xl font-extrabold text-primary/30">
                         {step.num}
                       </span>
                     </div>
@@ -238,12 +269,15 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* ═══════ TRUST SECTION ═══════ */}
-      <section className="py-20 bg-surface">
+      {/* ═══════ 6. TRUST SECTION ═══════ */}
+      <section className="py-20">
         <Container size="narrow">
           <ScrollReveal>
             <div className="text-center mb-12">
-              <h2 className="text-text-primary">{t("trustTitle")}</h2>
+              <span className="text-xs font-bold text-primary tracking-wider uppercase">
+                {isAr ? "شفافية ومصداقية" : "Editorial Integrity"}
+              </span>
+              <h2 className="text-3xl font-extrabold text-text-primary mt-2">{t("trustTitle")}</h2>
             </div>
           </ScrollReveal>
 
@@ -251,8 +285,8 @@ export default function HomePage() {
             {[t("trust1"), t("trust2"), t("trust3"), t("trust4")].map(
               (item, i) => (
                 <ScrollReveal key={i} delay={i * 100}>
-                  <div className="flex items-start gap-4 p-4 bg-card-bg rounded-lg border border-border">
-                    <div className="w-6 h-6 rounded-full bg-primary flex-shrink-0 flex items-center justify-center mt-0.5">
+                  <div className="flex items-start gap-4 p-4.5 bg-card-bg rounded-xl border border-border hover:border-primary/40 transition-colors shadow-sm">
+                    <div className="w-6 h-6 rounded-full bg-emerald-500 flex-shrink-0 flex items-center justify-center mt-0.5 shadow-sm shadow-emerald-500/20">
                       <svg
                         width="14"
                         height="14"
@@ -266,7 +300,7 @@ export default function HomePage() {
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
-                    <p className="text-text-primary font-medium">{item}</p>
+                    <p className="text-text-primary font-medium text-sm leading-relaxed">{item}</p>
                   </div>
                 </ScrollReveal>
               )
@@ -275,18 +309,25 @@ export default function HomePage() {
         </Container>
       </section>
 
-      {/* ═══════ FINAL CTA ═══════ */}
-      <section className="py-24">
-        <Container size="narrow">
+      {/* ═══════ 7. HIGH-CONVERTING FINAL CTA ═══════ */}
+      <section className="py-24 relative overflow-hidden bg-primary-tint/30 border-t border-border">
+        <div className="absolute inset-0 cyber-grid-bg opacity-50 pointer-events-none" />
+        <Container size="narrow" className="relative">
           <ScrollReveal>
-            <div className="text-center">
-              <h2 className="text-text-primary">{t("ctaTitle")}</h2>
-              <p className="mt-4 text-lg text-text-secondary">
+            <div className="text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-white text-xs font-bold">
+                <span>🛡️</span> {isAr ? "ابدأ اليوم مجاناً" : "Free 60-Second Security Checkup"}
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-text-primary">
+                {t("ctaTitle")}
+              </h2>
+              <p className="text-lg text-text-secondary max-w-xl mx-auto leading-relaxed">
                 {t("ctaSubtitle")}
               </p>
-              <div className="mt-8">
-                <Button size="lg" href={`/${locale}/diagnostic`}>
+              <div className="pt-2">
+                <Button size="lg" href={`/${locale}/diagnostic`} className="shadow-xl shadow-primary/25 text-base px-8 py-3.5">
                   {t("ctaCta")}
+                  <span className="ms-2 flip-rtl">→</span>
                 </Button>
               </div>
             </div>

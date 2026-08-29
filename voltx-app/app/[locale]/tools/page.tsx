@@ -208,9 +208,45 @@ export default function ToolsPage() {
                   text-text-primary placeholder:text-text-muted
                   focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/10
                   transition-all duration-200
-                  text-base
+                  text-base shadow-sm
                 "
               />
+            </div>
+
+            {/* Quick Filter Chips */}
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="text-xs font-semibold text-text-muted">
+                {locale === "ar" ? "بحث سريع:" : "Quick Filter:"}
+              </span>
+              {[
+                { label: locale === "ar" ? "🔑 إدارة كلمات المرور" : "🔑 Password Vaults", query: "password" },
+                { label: locale === "ar" ? "👥 فرق العمل عن بُعد" : "👥 Remote Teams", query: "remote" },
+                { label: locale === "ar" ? "🛡️ برامج الفدية" : "🛡️ Ransomware Protection", query: "ransomware" },
+                { label: locale === "ar" ? "⚡ إعداد سريع" : "⚡ 5-Min Setup", query: "setup" },
+              ].map((chip) => (
+                <button
+                  key={chip.query}
+                  onClick={() => setSearchQuery(searchQuery === chip.query ? "" : chip.query)}
+                  className={`
+                    px-2.5 py-1 text-xs font-medium rounded-lg border transition-all cursor-pointer
+                    ${
+                      searchQuery === chip.query
+                        ? "bg-primary text-white border-primary shadow-sm"
+                        : "bg-surface text-text-secondary border-border hover:border-primary/50 hover:bg-card-bg"
+                    }
+                  `}
+                >
+                  {chip.label}
+                </button>
+              ))}
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="text-xs text-rose-500 hover:underline ms-2 font-medium"
+                >
+                  {locale === "ar" ? "إلغاء البحث ✕" : "Clear ✕"}
+                </button>
+              )}
             </div>
           </div>
         </ScrollReveal>
