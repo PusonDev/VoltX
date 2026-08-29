@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
+import TranslationPending from "@/components/shared/TranslationPending";
 import { getProblems, getProblemBySlug, getProductsForProblem } from "@/lib/supabase/seed";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
@@ -13,7 +14,6 @@ interface PageProps {
 }
 
 export function generateStaticParams() {
-  // Pull slugs from Supabase at build time — never hardcoded
   const problems = getProblems();
   return problems.map((p) => ({ slug: p.slug }));
 }
@@ -38,18 +38,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function ProblemPage({ params }: { params: { locale: string; slug: string } }) {
-  const locale = params.locale;
-  const problem = getProblemBySlug(params.slug);
+export default async function ProblemPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const problem = getProblemBySlug(slug);
 
   if (!problem) notFound();
 
+  const tc = await getTranslations({ locale, namespace: "common" });
   const fittedProducts = getProductsForProblem(problem.id);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: `${siteUrl}/${locale}` },
-    { name: "Security Challenges", url: `${siteUrl}/${locale}/problems` },
+    { name: tc("home"), url: `${siteUrl}/${locale}` },
+    { name: tc("challenges"), url: `${siteUrl}/${locale}/problems` },
     { name: problem.title, url: `${siteUrl}/${locale}/problems/${problem.slug}` },
   ]);
 
@@ -62,11 +63,13 @@ export default function ProblemPage({ params }: { params: { locale: string; slug
 
       <section className="py-16">
         <Container size="narrow">
+          {locale !== "en" && <TranslationPending />}
+
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
-              <a href={`/${locale}`} className="hover:text-primary transition-colors">Home</a>
+              <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
               <span className="mx-2">/</span>
-              <a href={`/${locale}/problems`} className="hover:text-primary transition-colors">Challenges</a>
+              <a href={`/${locale}/problems`} className="hover:text-primary transition-colors">{tc("challenges")}</a>
               <span className="mx-2">/</span>
               <span className="text-text-secondary">{problem.title}</span>
             </nav>
@@ -98,9 +101,9 @@ export default function ProblemPage({ params }: { params: { locale: string; slug
         <section className="py-16 bg-surface">
           <Container>
             <ScrollReveal>
-              <h2 className="text-text-primary mb-2">Recommended Solutions</h2>
+              <h2 className="text-text-primary mb-2">{tc("recommendedSolutions")}</h2>
               <p className="text-text-secondary mb-8">
-                Products ranked by fit score for this specific challenge — not by commission.
+                {tc("recommendedSolutionsSubtitle")}
               </p>
             </ScrollReveal>
 

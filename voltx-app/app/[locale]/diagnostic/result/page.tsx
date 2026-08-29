@@ -9,7 +9,7 @@ import EmailGate from "@/components/gate/EmailGate";
 import { getProducts } from "@/lib/supabase/seed";
 
 export default function DiagnosticResultPage() {
-  const t = useTranslations();
+  const t = useTranslations("diagnostic");
   const locale = useLocale();
   const [isGated, setIsGated] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -75,9 +75,9 @@ export default function DiagnosticResultPage() {
     <section className="py-16">
       <Container>
         <ScrollReveal>
-          <h1 className="text-text-primary">Your Security Recommendations</h1>
+          <h1 className="text-text-primary">{t("resultTitle")}</h1>
           <p className="mt-4 text-lg text-text-secondary max-w-2xl">
-            Based on your diagnostic answers, here are the tools we recommend for your business — ranked by fit, not by commission.
+            {t("resultSubtitle")}
           </p>
         </ScrollReveal>
 

@@ -19,6 +19,8 @@
     "terms": "Terms of Service"
   },
   "common": {
+    "home": "Home",
+    "challenges": "Challenges",
     "learnMore": "Learn more",
     "viewAll": "View all",
     "readGuide": "Read guide",
@@ -31,6 +33,7 @@
     "directLink": "Direct link — no commission",
     "affiliateDisclosure": "We may earn a commission when you purchase through our links. This never affects our recommendations.",
     "lastVerified": "Last verified",
+    "lastUpdated": "Last updated",
     "translationPending": "Translation pending",
     "translationPendingDesc": "This content hasn't been translated yet. Showing the English version.",
     "loading": "Loading...",
@@ -55,7 +58,9 @@
     "viewProduct": "View product",
     "exploreProblems": "Explore Challenges",
     "whyTrustUs": "Why trust us?",
-    "copyright": "© {year} VoltX. All rights reserved."
+    "copyright": "© {year} VoltX. All rights reserved.",
+    "recommendedSolutions": "Recommended Solutions",
+    "recommendedSolutionsSubtitle": "Products ranked by fit score for this specific challenge — not by commission."
   },
   "home": {
     "heroTitle": "Stop guessing.\nStart protecting your business.",
@@ -112,7 +117,39 @@
     "next": "Next",
     "previous": "Previous",
     "submit": "Get My Recommendations",
-    "stepOf": "Step {current} of {total}"
+    "stepOf": "Step {current} of {total}",
+    "resultTitle": "Your Security Recommendations",
+    "resultSubtitle": "Based on your diagnostic answers, here are the tools we recommend for your business — ranked by fit, not by commission.",
+    "options": {
+      "Technology": "Technology",
+      "Healthcare": "Healthcare",
+      "Finance": "Finance",
+      "Retail": "Retail",
+      "Education": "Education",
+      "Legal": "Legal",
+      "Construction": "Construction",
+      "Real Estate": "Real Estate",
+      "Marketing": "Marketing",
+      "Other": "Other",
+      "None / just antivirus": "None / just antivirus",
+      "Password manager": "Password manager",
+      "VPN": "VPN",
+      "Firewall": "Firewall",
+      "Backup solution": "Backup solution",
+      "Email security": "Email security",
+      "Endpoint protection": "Endpoint protection",
+      "Password breaches & credential theft": "Password breaches & credential theft",
+      "Ransomware attacks": "Ransomware attacks",
+      "Phishing & email scams": "Phishing & email scams",
+      "Remote work security": "Remote work security",
+      "Data backup & recovery": "Data backup & recovery",
+      "Compliance requirements": "Compliance requirements",
+      "Employee security training": "Employee security training",
+      "Network intrusion": "Network intrusion",
+      "Yes": "Yes",
+      "No": "No",
+      "Not sure": "Not sure"
+    }
   },
   "gate": {
     "title": "Get Your Personalized Results",
@@ -160,6 +197,36 @@
     "transparency2": "Products without affiliate programs are still recommended if they're the best fit",
     "transparency3": "All editorial scores are based on hands-on evaluation",
     "transparency4": "We regularly re-verify our recommendations"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 2026",
+    "s1Title": "Information We Collect",
+    "s1Desc": "When you use our diagnostic tool or sign up for recommendations, we collect your email address and the answers you provide in the diagnostic questionnaire. We also collect anonymous usage data through cookies and analytics.",
+    "s2Title": "How We Use Your Information",
+    "s2Desc": "We use your email to deliver your personalized security recommendations. If you explicitly opt in to marketing communications (checkbox is unchecked by default), we may send periodic cybersecurity tips and product updates. We never sell your data to third parties.",
+    "s3Title": "Cookies",
+    "s3Desc": "We use a secure, httpOnly cookie to remember returning visitors so you don't have to re-enter your email on gated pages. We also use analytics cookies to understand site usage patterns.",
+    "s4Title": "Affiliate Links",
+    "s4Desc": "Some links on our site are affiliate links. When you click on an affiliate link and make a purchase, we may receive a commission. This never affects our editorial rankings or recommendations. Products are always ranked by fit score and editorial evaluation, never by commission amount.",
+    "s5Title": "Your Rights",
+    "s5Desc": "You can request deletion of your data at any time by contacting us. You can unsubscribe from marketing emails using the link in any email we send. You can clear your browser cookies to remove your session.",
+    "s6Title": "Contact",
+    "s6Desc": "For privacy-related inquiries, please contact us at privacy@voltx.com."
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 2026",
+    "s1Title": "Acceptance of Terms",
+    "s1Desc": "By accessing and using VoltX, you agree to these terms of service. If you do not agree, please do not use the site.",
+    "s2Title": "Our Service",
+    "s2Desc": "VoltX provides cybersecurity product recommendations and educational content for small businesses. Our recommendations are based on editorial evaluation and are intended as guidance, not professional security consulting.",
+    "s3Title": "Affiliate Disclosure",
+    "s3Desc": "VoltX earns revenue through affiliate commissions when you purchase products through our links. We clearly label affiliate links. Commission never influences our editorial rankings — products are ranked solely by fit score and editorial evaluation.",
+    "s4Title": "Limitation of Liability",
+    "s4Desc": "VoltX provides recommendations in good faith but does not guarantee the security of any product or combination of products. We are not liable for any damages resulting from your use of recommended products.",
+    "s5Title": "Changes to Terms",
+    "s5Desc": "We may update these terms from time to time. Continued use of the site constitutes acceptance of updated terms."
   },
   "footer": {
     "description": "Problem-first cybersecurity & privacy advisor for small businesses.",

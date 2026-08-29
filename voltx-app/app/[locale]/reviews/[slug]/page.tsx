@@ -5,6 +5,7 @@ import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
+import TranslationPending from "@/components/shared/TranslationPending";
 import { getReviews, getReviewBySlug, getProductBySlug } from "@/lib/supabase/seed";
 import { reviewSchema, breadcrumbSchema } from "@/lib/structured-data";
 
@@ -37,10 +38,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function ReviewPage({ params }: { params: { locale: string; slug: string } }) {
-  const locale = params.locale;
-  const review = getReviewBySlug(params.slug);
+export default async function ReviewPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const review = getReviewBySlug(slug);
   if (!review) notFound();
+
+  const tr = await getTranslations({ locale, namespace: "review" });
+  const tc = await getTranslations({ locale, namespace: "common" });
 
   const product = getProductBySlug(
     review.product_id === "p1" ? "1password-business" :
@@ -52,8 +56,8 @@ export default function ReviewPage({ params }: { params: { locale: string; slug:
 
   const structuredData = product ? reviewSchema(review, product, `${siteUrl}/${locale}/reviews/${review.slug}`) : null;
   const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: `${siteUrl}/${locale}` },
-    { name: "Reviews", url: `${siteUrl}/${locale}/hub` },
+    { name: tc("home"), url: `${siteUrl}/${locale}` },
+    { name: tr("ourVerdict"), url: `${siteUrl}/${locale}/hub` },
     { name: review.title, url: `${siteUrl}/${locale}/reviews/${review.slug}` },
   ]);
 
@@ -66,18 +70,20 @@ export default function ReviewPage({ params }: { params: { locale: string; slug:
 
       <article className="py-16">
         <Container size="narrow">
+          {locale !== "en" && <TranslationPending />}
+
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
-              <a href={`/${locale}`} className="hover:text-primary transition-colors">Home</a>
+              <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
               <span className="mx-2">/</span>
-              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">Hub</a>
+              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">{tc("readReview")}</a>
               <span className="mx-2">/</span>
               <span className="text-text-secondary">{review.title}</span>
             </nav>
           </ScrollReveal>
 
           <ScrollReveal>
-            <Badge variant="success" className="mb-4">Review</Badge>
+            <Badge variant="success" className="mb-4">{tr("ourVerdict")}</Badge>
             <h1 className="text-text-primary">{review.title}</h1>
             <p className="mt-4 text-lg text-text-secondary leading-relaxed">
               {review.excerpt}
@@ -90,7 +96,7 @@ export default function ReviewPage({ params }: { params: { locale: string; slug:
               <div className="mt-8 flex items-center gap-6 p-6 bg-primary-tint rounded-xl">
                 <div className="text-center">
                   <p className="text-3xl font-bold text-primary">{product.editorial_score.toFixed(1)}</p>
-                  <p className="text-xs text-primary-dark font-medium mt-1">Editorial Score</p>
+                  <p className="text-xs text-primary-dark font-medium mt-1">{tc("editorialScore")}</p>
                 </div>
                 <div className="flex-grow">
                   <p className="text-sm font-semibold text-primary-dark">{review.verdict}</p>
@@ -103,7 +109,7 @@ export default function ReviewPage({ params }: { params: { locale: string; slug:
           <ScrollReveal delay={150}>
             <div className="mt-10 grid sm:grid-cols-2 gap-6">
               <div className="p-5 bg-white rounded-xl border border-border">
-                <h3 className="font-bold text-primary mb-3">✓ Pros</h3>
+                <h3 className="font-bold text-primary mb-3">✓ {tr("pros")}</h3>
                 <ul className="space-y-2">
                   {review.pros.map((pro, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">
@@ -114,7 +120,7 @@ export default function ReviewPage({ params }: { params: { locale: string; slug:
                 </ul>
               </div>
               <div className="p-5 bg-white rounded-xl border border-border">
-                <h3 className="font-bold text-red-600 mb-3">✗ Cons</h3>
+                <h3 className="font-bold text-red-600 mb-3">✗ {tr("cons")}</h3>
                 <ul className="space-y-2">
                   {review.cons.map((con, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-text-secondary">

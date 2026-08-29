@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
 import ScrollReveal from "@/components/shared/ScrollReveal";
+import TranslationPending from "@/components/shared/TranslationPending";
 import { getGuides, getGuideBySlug } from "@/lib/supabase/seed";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
@@ -36,16 +37,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function GuidePage({ params }: { params: { locale: string; slug: string } }) {
-  const locale = params.locale;
-  const guide = getGuideBySlug(params.slug);
+export default async function GuidePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const guide = getGuideBySlug(slug);
   if (!guide) notFound();
+
+  const tc = await getTranslations({ locale, namespace: "common" });
+  const tn = await getTranslations({ locale, namespace: "nav" });
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: `${siteUrl}/${locale}` },
-    { name: "Guides", url: `${siteUrl}/${locale}/hub` },
+    { name: tc("home"), url: `${siteUrl}/${locale}` },
+    { name: tn("guides"), url: `${siteUrl}/${locale}/hub` },
     { name: guide.title, url: `${siteUrl}/${locale}/guides/${guide.slug}` },
   ]);
 
@@ -55,11 +59,13 @@ export default function GuidePage({ params }: { params: { locale: string; slug: 
 
       <article className="py-16">
         <Container size="narrow">
+          {locale !== "en" && <TranslationPending />}
+
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
-              <a href={`/${locale}`} className="hover:text-primary transition-colors">Home</a>
+              <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
               <span className="mx-2">/</span>
-              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">Hub</a>
+              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">{tn("hub")}</a>
               <span className="mx-2">/</span>
               <span className="text-text-secondary">{guide.title}</span>
             </nav>
@@ -72,7 +78,7 @@ export default function GuidePage({ params }: { params: { locale: string; slug: 
               {guide.excerpt}
             </p>
             <p className="mt-2 text-xs text-text-muted">
-              Last updated: {new Date(guide.updated_at).toLocaleDateString("en", {
+              {tc("lastUpdated")}: {new Date(guide.updated_at).toLocaleDateString(locale, {
                 year: "numeric",
                 month: "long",
                 day: "numeric",

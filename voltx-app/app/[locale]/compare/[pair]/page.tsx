@@ -5,6 +5,7 @@ import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
+import TranslationPending from "@/components/shared/TranslationPending";
 import { getComparisons, getComparisonBySlug, getProductBySlug, seedProducts } from "@/lib/supabase/seed";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
@@ -40,10 +41,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function ComparePage({ params }: { params: { locale: string; pair: string } }) {
-  const locale = params.locale;
-  const comparison = getComparisonBySlug(params.pair);
+export default async function ComparePage({ params }: { params: Promise<{ locale: string; pair: string }> }) {
+  const { locale, pair } = await params;
+  const comparison = getComparisonBySlug(pair);
   if (!comparison) notFound();
+
+  const tc = await getTranslations({ locale, namespace: "common" });
+  const tcomp = await getTranslations({ locale, namespace: "compare" });
 
   const product1 = seedProducts.find((p) => p.id === comparison.product1_id);
   const product2 = seedProducts.find((p) => p.id === comparison.product2_id);
@@ -53,8 +57,8 @@ export default function ComparePage({ params }: { params: { locale: string; pair
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: `${siteUrl}/${locale}` },
-    { name: "Comparisons", url: `${siteUrl}/${locale}/hub` },
+    { name: tc("home"), url: `${siteUrl}/${locale}` },
+    { name: tc("compare"), url: `${siteUrl}/${locale}/hub` },
     { name: `${product1.name} vs ${product2.name}`, url: `${siteUrl}/${locale}/compare/${comparison.slug}` },
   ]);
 
@@ -63,47 +67,65 @@ export default function ComparePage({ params }: { params: { locale: string; pair
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
 
       <section className="py-16">
-        <Container>
+        <Container size="narrow">
+          {locale !== "en" && <TranslationPending />}
+
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
-              <a href={`/${locale}`} className="hover:text-primary transition-colors">Home</a>
+              <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
               <span className="mx-2">/</span>
-              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">Hub</a>
+              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">{tc("compare")}</a>
               <span className="mx-2">/</span>
-              <span className="text-text-secondary">Compare</span>
+              <span className="text-text-secondary">{product1.name} vs {product2.name}</span>
             </nav>
           </ScrollReveal>
 
           <ScrollReveal>
             <h1 className="text-text-primary">
-              {product1.name} <span className="text-text-muted font-normal">vs</span> {product2.name}
+              {tcomp("comparisonTitle", { product1: product1.name, product2: product2.name })}
             </h1>
-            {winner && (
-              <div className="mt-4">
-                <Badge variant="success">Our Pick: {winner.name}</Badge>
+          </ScrollReveal>
+
+          {/* Winner banner if applicable */}
+          {winner && (
+            <ScrollReveal delay={100}>
+              <div className="mt-8 p-6 bg-primary-tint rounded-xl flex items-center gap-4">
+                <span className="text-2xl">🏆</span>
+                <div>
+                  <p className="text-sm font-semibold text-primary">{tcomp("ourPick")}: {winner.name}</p>
+                  <p className="text-xs text-primary-dark mt-0.5">
+                    {winner.name} wins on overall value and suitability for small business teams.
+                  </p>
+                </div>
               </div>
-            )}
-          </ScrollReveal>
+            </ScrollReveal>
+          )}
 
-          {/* Head-to-head summary */}
-          <ScrollReveal delay={100}>
-            <div className="mt-10 grid sm:grid-cols-2 gap-6">
-              <ProductCard product={product1} pageSlug={comparison.slug} placement="compare-left" />
-              <ProductCard product={product2} pageSlug={comparison.slug} placement="compare-right" />
-            </div>
-          </ScrollReveal>
-
-          {/* Comparison content */}
-          <ScrollReveal delay={200}>
-            <div className="mt-12 prose prose-slate max-w-none">
+          {/* Comparison Content */}
+          <ScrollReveal delay={150}>
+            <div className="mt-10 prose prose-slate max-w-none">
               {comparison.comparison_content.split("\n\n").map((paragraph, i) => {
                 if (paragraph.startsWith("## ")) {
-                  return <h2 key={i} className="text-xl font-bold text-text-primary mt-10 mb-4">{paragraph.replace("## ", "")}</h2>;
+                  return <h2 key={i} className="text-xl font-bold text-text-primary mt-8 mb-4">{paragraph.replace("## ", "")}</h2>;
                 }
                 return <p key={i} className="text-text-secondary leading-relaxed mb-4">{paragraph}</p>;
               })}
             </div>
           </ScrollReveal>
+
+          {/* Side-by-side Product Cards */}
+          <div className="mt-12 grid sm:grid-cols-2 gap-6">
+            <ProductCard
+              product={product1}
+              pageSlug={comparison.slug}
+              placement="compare-p1"
+            />
+            <ProductCard
+              product={product2}
+              pageSlug={comparison.slug}
+              placement="compare-p2"
+            />
+          </div>
         </Container>
       </section>
     </>

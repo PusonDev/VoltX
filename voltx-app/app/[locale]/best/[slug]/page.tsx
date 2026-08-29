@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
+import TranslationPending from "@/components/shared/TranslationPending";
 import { getBestCategories, getBestCategoryBySlug, seedProducts } from "@/lib/supabase/seed";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
@@ -36,10 +37,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default function BestPage({ params }: { params: { locale: string; slug: string } }) {
-  const locale = params.locale;
-  const category = getBestCategoryBySlug(params.slug);
+export default async function BestPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const category = getBestCategoryBySlug(slug);
   if (!category) notFound();
+
+  const tc = await getTranslations({ locale, namespace: "common" });
+  const th = await getTranslations({ locale, namespace: "hub" });
 
   const products = category.product_ids
     .map((id) => seedProducts.find((p) => p.id === id))
@@ -48,8 +52,8 @@ export default function BestPage({ params }: { params: { locale: string; slug: s
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([
-    { name: "Home", url: `${siteUrl}/${locale}` },
-    { name: "Best Picks", url: `${siteUrl}/${locale}/hub` },
+    { name: tc("home"), url: `${siteUrl}/${locale}` },
+    { name: th("bestPicks"), url: `${siteUrl}/${locale}/hub` },
     { name: category.title, url: `${siteUrl}/${locale}/best/${category.slug}` },
   ]);
 
@@ -59,35 +63,33 @@ export default function BestPage({ params }: { params: { locale: string; slug: s
 
       <section className="py-16">
         <Container>
+          {locale !== "en" && <TranslationPending />}
+
+          <ScrollReveal>
+            <nav className="text-sm text-text-muted mb-8">
+              <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
+              <span className="mx-2">/</span>
+              <a href={`/${locale}/hub`} className="hover:text-primary transition-colors">{th("bestPicks")}</a>
+              <span className="mx-2">/</span>
+              <span className="text-text-secondary">{category.title}</span>
+            </nav>
+          </ScrollReveal>
+
           <ScrollReveal>
             <h1 className="text-text-primary">{category.title}</h1>
-            <p className="mt-4 text-lg text-text-secondary max-w-2xl leading-relaxed">
+            <p className="mt-4 text-lg text-text-secondary max-w-2xl">
               {category.description}
-            </p>
-            <p className="mt-2 text-xs text-text-muted">
-              Last updated: {new Date(category.updated_at).toLocaleDateString("en", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
             </p>
           </ScrollReveal>
 
-          <div className="mt-12 space-y-6">
+          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product, i) => (
               <ScrollReveal key={product!.id} delay={i * 100}>
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">#{i + 1}</span>
-                  </div>
-                  <div className="flex-grow">
-                    <ProductCard
-                      product={product!}
-                      pageSlug={category.slug}
-                      placement="best-of"
-                    />
-                  </div>
-                </div>
+                <ProductCard
+                  product={product!}
+                  pageSlug={category.slug}
+                  placement="best-category"
+                />
               </ScrollReveal>
             ))}
           </div>

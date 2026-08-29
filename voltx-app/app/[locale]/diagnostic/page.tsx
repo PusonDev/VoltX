@@ -64,6 +64,14 @@ export default function DiagnosticPage() {
     }));
   };
 
+  const getOptionLabel = (val: string) => {
+    try {
+      return t(`options.${val}` as any) || val;
+    } catch {
+      return val;
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       await fetch("/api/diagnostic", {
@@ -123,7 +131,7 @@ export default function DiagnosticPage() {
                           : "bg-white text-text-secondary border-border hover:border-primary/30"
                         }`}
                     >
-                      {ind}
+                      {getOptionLabel(ind)}
                     </button>
                   ))}
                 </div>
@@ -159,7 +167,7 @@ export default function DiagnosticPage() {
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-text-primary mb-3">{t("step2Q1")}</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {currentTools.map((tool) => (
                     <button
                       key={tool}
@@ -170,7 +178,7 @@ export default function DiagnosticPage() {
                           : "bg-white text-text-secondary border-border hover:border-primary/30"
                         }`}
                     >
-                      {answers.currentTools.includes(tool) ? "✓ " : ""}{tool}
+                      {answers.currentTools.includes(tool) ? "✓ " : ""}{getOptionLabel(tool)}
                     </button>
                   ))}
                 </div>
@@ -217,7 +225,7 @@ export default function DiagnosticPage() {
                           : "bg-white text-text-secondary border-border hover:border-primary/30"
                         }`}
                     >
-                      {answers.concerns.includes(concern) ? "✓ " : ""}{concern}
+                      {answers.concerns.includes(concern) ? "✓ " : ""}{getOptionLabel(concern)}
                     </button>
                   ))}
                 </div>
@@ -236,7 +244,7 @@ export default function DiagnosticPage() {
                           : "bg-white text-text-secondary border-border hover:border-primary/30"
                         }`}
                     >
-                      {opt}
+                      {getOptionLabel(opt)}
                     </button>
                   ))}
                 </div>
