@@ -24,14 +24,14 @@ export default function LanguageSwitcher() {
       className="
         inline-flex items-center gap-1.5 px-3 py-1.5
         text-sm font-medium rounded-lg
-        border border-border bg-white
+        border border-border bg-card-bg
         text-text-secondary hover:text-primary hover:border-primary/30
         transition-colors duration-200
       "
       aria-label={`Switch to ${localeNames[otherLocale]}`}
     >
       <span className="text-base" aria-hidden="true">
-        {otherLocale === "ar" ? "🌐" : "🌐"}
+        🌐
       </span>
       {localeNames[otherLocale]}
     </button>

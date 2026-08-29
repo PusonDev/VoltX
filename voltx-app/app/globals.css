@@ -1,27 +1,90 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  /* ─── Emerald Palette ─── */
-  --color-primary: #059669;
-  --color-primary-hover: #047857;
-  --color-primary-tint: #ECFDF5;
-  --color-primary-dark: #065F46;
-
-  /* ─── Amber micro-accent ─── */
-  --color-accent: #F59E0B;
-  --color-accent-hover: #D97706;
-
-  /* ─── Neutrals ─── */
-  --color-surface: #F9FAFB;
-  --color-border: #E2E8F0;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #475569;
-  --color-text-muted: #94A3B8;
-
   /* ─── Typography ─── */
   --font-headline: "Geist", "Inter", system-ui, -apple-system, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  /* ─── Colors mapping to CSS Variables for 3 Themes ─── */
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-tint: var(--primary-tint);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-card-bg: var(--card-bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════
+   THEME DEFINITIONS (3 THEMES)
+   1. Light (Default - Emerald / Clean Slate)
+   2. Purple (Light Beguni / Violet / Soft Lavender)
+   3. Dark (Full Black / OLED Minimal Dark)
+   ═══════════════════════════════════════ */
+
+:root,
+[data-theme="light"] {
+  --bg-page: #FFFFFF;
+  --card-bg: #FFFFFF;
+  --primary: #059669;
+  --primary-hover: #047857;
+  --primary-tint: #ECFDF5;
+  --primary-dark: #065F46;
+
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+
+  --surface: #F9FAFB;
+  --border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+}
+
+/* ─── 2. Light Beguni (Purple / Lavender Theme) ─── */
+[data-theme="purple"] {
+  --bg-page: #FAF5FF; /* soft light lavender page bg */
+  --card-bg: #FFFFFF;
+  --primary: #7C3AED; /* vivid purple primary */
+  --primary-hover: #6D28D9;
+  --primary-tint: #F3E8FF; /* light beguni tint */
+  --primary-dark: #5B21B6;
+
+  --accent: #F59E0B;
+  --accent-hover: #D97706;
+
+  --surface: #F5F3FF; /* subtle lavender-surface */
+  --border: #E9D5FF; /* soft violet border */
+  --text-primary: #1E1B4B; /* deep rich violet-black */
+  --text-secondary: #4C1D95;
+  --text-muted: #8B5CF6;
+}
+
+/* ─── 3. Full Black (OLED Dark Mode) ─── */
+[data-theme="dark"] {
+  --bg-page: #000000; /* Pure deep black */
+  --card-bg: #09090B; /* Deep dark surface */
+  --primary: #10B981; /* High-contrast bright emerald */
+  --primary-hover: #059669;
+  --primary-tint: #064E3B; /* deep emerald glow */
+  --primary-dark: #34D399;
+
+  --accent: #FBBF24;
+  --accent-hover: #F59E0B;
+
+  --surface: #0A0A0C; /* very dark zinc/black */
+  --border: #27272A; /* dark crisp border */
+  --text-primary: #F8FAFC; /* crisp clean white */
+  --text-secondary: #A1A1AA; /* readable light muted */
+  --text-muted: #71717A;
 }
 
 /* ─── Base Styles ─── */
@@ -33,10 +96,11 @@ html {
 
 body {
   font-family: var(--font-body);
-  color: var(--color-text-primary);
-  background-color: #FFFFFF;
+  color: var(--text-primary);
+  background-color: var(--bg-page);
   line-height: 1.65;
   font-size: 16px;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* ─── Typography Hierarchy ─── */
@@ -45,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.15;
-  color: var(--color-text-primary);
+  color: var(--text-primary);
 }
 
 h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
@@ -104,15 +168,15 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
 
 /* ─── Focus Styles ─── */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
 /* ─── Selection ─── */
 ::selection {
-  background-color: var(--color-primary-tint);
-  color: var(--color-primary-dark);
+  background-color: var(--primary-tint);
+  color: var(--primary-dark);
 }
 
 /* ─── Scrollbar ─── */
@@ -125,10 +189,10 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-border);
+  background: var(--border);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-text-muted);
+  background: var(--text-muted);
 }

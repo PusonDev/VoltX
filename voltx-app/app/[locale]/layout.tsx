@@ -5,6 +5,7 @@ import { GeistSans } from "geist/font/sans";
 import { locales, localeDirection, type Locale } from "@/i18n/config";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 interface LocaleLayoutProps {
   children: React.ReactNode;
@@ -31,7 +32,7 @@ export default async function LocaleLayout({
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   return (
-    <html lang={locale} dir={dir} className={GeistSans.className}>
+    <html lang={locale} dir={dir} className={GeistSans.className} data-theme="light" suppressHydrationWarning>
       <head>
         {/* Hreflang alternates for homepage — individual pages add their own */}
         <link rel="alternate" hrefLang="en" href={`${siteUrl}/en`} />
@@ -39,12 +40,14 @@ export default async function LocaleLayout({
         <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/en`} />
         <link rel="icon" href="/favicon.ico" />
       </head>
-      <body className="min-h-screen flex flex-col bg-white text-text-primary">
-        <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-        </NextIntlClientProvider>
+      <body className="min-h-screen flex flex-col transition-colors duration-200">
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>
+            <Navbar />
+            <main className="flex-grow">{children}</main>
+            <Footer />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
