@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -27,9 +28,16 @@ export default function Navbar() {
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-2 font-headline text-xl font-bold text-text-primary hover:text-primary transition-colors"
+            className="flex items-center gap-2.5 font-headline text-xl font-bold text-text-primary hover:text-primary transition-colors group"
           >
-            <span className="text-primary text-2xl" aria-hidden="true">⚡</span>
+            <Image
+              src="/logo.png"
+              alt="VoltX Logo"
+              width={34}
+              height={34}
+              className="w-8.5 h-8.5 rounded-lg object-cover shadow-sm transition-transform duration-200 group-hover:scale-105"
+              priority
+            />
             <span>Volt<span className="text-primary">X</span></span>
           </Link>
 

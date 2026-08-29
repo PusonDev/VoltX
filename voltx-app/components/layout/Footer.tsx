@@ -1,5 +1,6 @@
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 
 export default function Footer() {
@@ -15,10 +16,16 @@ export default function Footer() {
           <div className="md:col-span-1">
             <Link
               href={`/${locale}`}
-              className="flex items-center gap-2 font-headline text-xl font-bold text-text-primary"
+              className="flex items-center gap-2.5 font-headline text-xl font-bold text-text-primary group"
             >
-              <span className="text-primary text-2xl" aria-hidden="true">⚡</span>
-              Volt<span className="text-primary">X</span>
+              <Image
+                src="/logo.png"
+                alt="VoltX Logo"
+                width={34}
+                height={34}
+                className="w-8.5 h-8.5 rounded-lg object-cover shadow-sm transition-transform duration-200 group-hover:scale-105"
+              />
+              <span>Volt<span className="text-primary">X</span></span>
             </Link>
             <p className="mt-3 text-sm text-text-secondary leading-relaxed">
               {t("footer.description")}
