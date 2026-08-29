@@ -1,41 +1,20 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
 
-@theme {
-  /* ─── Typography ─── */
-  --font-headline: "Geist", "Inter", system-ui, -apple-system, sans-serif;
-  --font-body: "Inter", system-ui, -apple-system, sans-serif;
-
-  /* ─── Dynamic Colors mapping to CSS Variables for 3 Themes ─── */
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-tint: var(--primary-tint);
-  --color-primary-dark: var(--primary-dark);
-
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-
-  --color-surface: var(--surface);
-  --color-border: var(--border);
-  --color-card-bg: var(--card-bg);
-  --color-text-primary: var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-}
-
 /* ═══════════════════════════════════════
-   THEME DEFINITIONS (3 THEMES)
-   1. Purple / Light Beguni (NOW DEFAULT 🔮)
-   2. Light / Emerald Clean (☀️)
-   3. Full Black / OLED Minimal Dark (🌙)
+   3 THEME SYSTEM (CSS VARIABLE TOKENS)
+   1. Light Beguni / Lavender (DEFAULT 🔮)
+   2. Light Emerald (☀️)
+   3. OLED Black Dark (🌙)
    ═══════════════════════════════════════ */
 
-/* ─── 1. Light Beguni / Purple Theme (DEFAULT) ─── */
+/* ─── 1. Light Beguni (DEFAULT) ─── */
 :root,
-[data-theme="purple"] {
-  --bg-page: #F5EEFF; /* Visible, rich, gorgeous light beguni / soft violet canvas */
-  --card-bg: #FFFFFF; /* Crisp clean white cards for contrast */
-  --primary: #7C3AED; /* Deep, vivid violet/purple */
+[data-theme="purple"],
+html[data-theme="purple"] {
+  --bg-page: #FAF5FF; /* Rich beautiful light violet/beguni */
+  --card-bg: #FFFFFF; /* Pure clean card contrast */
+  --primary: #7C3AED; /* Vibrant violet-purple */
   --primary-hover: #6D28D9;
   --primary-tint: #EDE9FE; /* Soft purple tint */
   --primary-dark: #4C1D95; /* High contrast text on purple tint */
@@ -43,15 +22,16 @@
   --accent: #F59E0B;
   --accent-hover: #D97706;
 
-  --surface: #EFEBFF; /* Distinctive light purple surface section bg */
-  --border: #DDD6FE; /* Clear, elegant soft purple border */
-  --text-primary: #1E1B4B; /* Very rich deep violet-slate */
+  --surface: #F3E8FF; /* Visible light purple surface */
+  --border: #DDD6FE; /* Soft violet border */
+  --text-primary: #1E1B4B; /* Rich deep indigo-slate */
   --text-secondary: #4C1D95; /* Visible purple-slate secondary text */
-  --text-muted: #7C3AED; /* Clear muted violet */
+  --text-muted: #7C3AED;
 }
 
-/* ─── 2. Light Emerald Theme ─── */
-[data-theme="light"] {
+/* ─── 2. Light Emerald ─── */
+[data-theme="light"],
+html[data-theme="light"] {
   --bg-page: #FFFFFF;
   --card-bg: #FFFFFF;
   --primary: #059669;
@@ -69,30 +49,53 @@
   --text-muted: #94A3B8;
 }
 
-/* ─── 3. Full Black Dark Mode ─── */
-[data-theme="dark"] {
-  --bg-page: #000000; /* Pure deep OLED black */
-  --card-bg: #0C0C0E; /* Deep dark sleek card surface */
-  --primary: #A855F7; /* Glowing vibrant purple accent for dark mode */
+/* ─── 3. Full Black OLED Dark ─── */
+[data-theme="dark"],
+html[data-theme="dark"] {
+  --bg-page: #000000;
+  --card-bg: #0C0C0E;
+  --primary: #A855F7;
   --primary-hover: #9333EA;
-  --primary-tint: #3B0764; /* Deep glowing tint */
+  --primary-tint: #3B0764;
   --primary-dark: #D8B4FE;
 
   --accent: #FBBF24;
   --accent-hover: #F59E0B;
 
-  --surface: #050507; /* Super deep dark section surface */
-  --border: #27272A; /* Crisp zinc border */
-  --text-primary: #F8FAFC; /* Crisp clean white */
-  --text-secondary: #A1A1AA; /* Balanced readable gray */
+  --surface: #050507;
+  --border: #27272A;
+  --text-primary: #F8FAFC;
+  --text-secondary: #A1A1AA;
   --text-muted: #71717A;
 }
 
-/* ─── Base Styles ─── */
+@theme {
+  --font-headline: "Geist", "Inter", system-ui, -apple-system, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, sans-serif;
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-tint: var(--primary-tint);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-card-bg: var(--card-bg);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+}
+
+/* ─── Direct Global Styles with Fallbacks ─── */
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
 }
 
 body {
@@ -101,6 +104,7 @@ body {
   background-color: var(--bg-page);
   line-height: 1.65;
   font-size: 16px;
+  min-height: 100vh;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 

@@ -15,11 +15,11 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "bg-primary text-white hover:bg-primary-hover active:bg-primary-dark shadow-sm hover:shadow-md",
   secondary:
-    "bg-primary-tint text-primary-dark hover:bg-[#D1FAE5] active:bg-[#A7F3D0]",
+    "bg-primary-tint text-primary-dark hover:opacity-90 active:opacity-100",
   ghost:
     "bg-transparent text-text-secondary hover:bg-surface hover:text-text-primary",
   outline:
-    "bg-white border border-border text-text-primary hover:border-primary hover:text-primary",
+    "bg-card-bg border border-border text-text-primary hover:border-primary hover:text-primary",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
