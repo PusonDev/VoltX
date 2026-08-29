@@ -38,7 +38,8 @@ export default async function LocaleLayout({
         <link rel="alternate" hrefLang="en" href={`${siteUrl}/en`} />
         <link rel="alternate" hrefLang="ar" href={`${siteUrl}/ar`} />
         <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/en`} />
-        <link rel="icon" href="/logo.png" />
+        <link rel="icon" type="image/png" href="/logo.png" />
+        <link rel="shortcut icon" type="image/png" href="/logo.png" />
         <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body className="min-h-screen flex flex-col transition-colors duration-200">

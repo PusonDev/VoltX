@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   },
   description:
     "Problem-first cybersecurity & privacy advisor for small businesses. Get fitted security recommendations — not generic product lists.",
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
