@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
@@ -28,6 +28,31 @@ export default function ProductCard({
   
   const [guideOpen, setGuideOpen] = useState(false);
   const setupGuide = locale === "ar" ? product.setup_guide_ar : product.setup_guide_en;
+
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    // Only apply hover effect on desktop (rough check using matchMedia or just apply to all and let mobile rely on clicks)
+    // Actually, on mobile, touch events can trigger mouseenter, but it's safer to just clear any closing timeout
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setGuideOpen(true);
+    }, 150);
+  };
+
+  const handleMouseLeave = () => {
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    hoverTimeoutRef.current = setTimeout(() => {
+      setGuideOpen(false);
+    }, 150);
+  };
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    };
+  }, []);
 
   const handleClick = async () => {
     // Log click via API
@@ -157,7 +182,11 @@ export default function ProductCard({
 
       {/* Setup Guide Expander */}
       {setupGuide && setupGuide.length > 0 && (
-        <div className="mt-4 pt-4 border-t border-border">
+        <div 
+          className="mt-4 pt-4 border-t border-border"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <button
             onClick={() => setGuideOpen(!guideOpen)}
             className="flex items-center justify-between w-full text-sm font-medium text-text-secondary hover:text-primary transition-colors"

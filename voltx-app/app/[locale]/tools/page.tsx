@@ -64,7 +64,7 @@ export default function ToolsPage() {
               <select
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-border bg-white text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
+                className="px-3 py-2 rounded-lg border border-border bg-card-bg text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
               >
                 <option value="all">{t("allCategories")}</option>
                 {categories.map((c) => (
@@ -79,7 +79,7 @@ export default function ToolsPage() {
               <select
                 value={platformFilter}
                 onChange={(e) => setPlatformFilter(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-border bg-white text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
+                className="px-3 py-2 rounded-lg border border-border bg-card-bg text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
               >
                 <option value="all">{t("allPlatforms")}</option>
                 {platforms.map((p) => (
@@ -94,7 +94,7 @@ export default function ToolsPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as "editorial" | "fit" | "price")}
-                className="px-3 py-2 rounded-lg border border-border bg-white text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
+                className="px-3 py-2 rounded-lg border border-border bg-card-bg text-sm text-text-primary focus:border-primary focus:outline-none min-h-[44px]"
               >
                 <option value="editorial">{tc("editorialScore")}</option>
                 <option value="fit">{tc("fitScore")}</option>
