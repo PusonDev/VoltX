@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default function ProblemsPage() {
   const t = useTranslations("problems");
   const locale = useLocale();
-  const problems = getProblems();
+  const problems = getProblems(locale);
 
   return (
     <section className="py-16">

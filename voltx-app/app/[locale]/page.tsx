@@ -31,7 +31,7 @@ export default function HomePage() {
   const t = useTranslations("home");
   const tc = useTranslations("common");
   const locale = useLocale();
-  const problems = getProblems();
+  const problems = getProblems(locale);
 
   return (
     <>

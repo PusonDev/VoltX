@@ -40,12 +40,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProblemPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const problem = getProblemBySlug(slug);
+  const problem = getProblemBySlug(slug, locale);
 
   if (!problem) notFound();
 
   const tc = await getTranslations({ locale, namespace: "common" });
-  const fittedProducts = getProductsForProblem(problem.id);
+  const fittedProducts = getProductsForProblem(problem.id, locale);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([

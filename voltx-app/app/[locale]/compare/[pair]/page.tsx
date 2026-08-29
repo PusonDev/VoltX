@@ -2,11 +2,10 @@ import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
-import Badge from "@/components/ui/Badge";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
-import TranslationPending from "@/components/shared/TranslationPending";
-import { getComparisons, getComparisonBySlug, getProductBySlug, seedProducts } from "@/lib/supabase/seed";
+import { getComparisons, getComparisonBySlug, getProducts } from "@/lib/supabase/seed";
+import type { Product } from "@/lib/supabase/types";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 interface PageProps {
@@ -20,11 +19,12 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, pair } = await params;
-  const comparison = getComparisonBySlug(pair);
+  const comparison = getComparisonBySlug(pair, locale);
   if (!comparison) return {};
 
-  const p1 = seedProducts.find((p) => p.id === comparison.product1_id);
-  const p2 = seedProducts.find((p) => p.id === comparison.product2_id);
+  const localizedProducts: Product[] = getProducts(locale);
+  const p1 = localizedProducts.find((p: Product) => p.id === comparison.product1_id);
+  const p2 = localizedProducts.find((p: Product) => p.id === comparison.product2_id);
   const title = `${p1?.name || "Product"} vs ${p2?.name || "Product"} — Full Comparison`;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
@@ -43,17 +43,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ComparePage({ params }: { params: Promise<{ locale: string; pair: string }> }) {
   const { locale, pair } = await params;
-  const comparison = getComparisonBySlug(pair);
+  const comparison = getComparisonBySlug(pair, locale);
   if (!comparison) notFound();
 
   const tc = await getTranslations({ locale, namespace: "common" });
   const tcomp = await getTranslations({ locale, namespace: "compare" });
 
-  const product1 = seedProducts.find((p) => p.id === comparison.product1_id);
-  const product2 = seedProducts.find((p) => p.id === comparison.product2_id);
+  const localizedProducts: Product[] = getProducts(locale);
+  const product1 = localizedProducts.find((p: Product) => p.id === comparison.product1_id);
+  const product2 = localizedProducts.find((p: Product) => p.id === comparison.product2_id);
   if (!product1 || !product2) notFound();
 
-  const winner = comparison.winner_id ? seedProducts.find((p) => p.id === comparison.winner_id) : null;
+  const winner = comparison.winner_id ? localizedProducts.find((p: Product) => p.id === comparison.winner_id) : null;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
   const breadcrumbs = breadcrumbSchema([
@@ -68,8 +69,6 @@ export default async function ComparePage({ params }: { params: Promise<{ locale
 
       <section className="py-16">
         <Container size="narrow">
-          {locale !== "en" && <TranslationPending />}
-
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
               <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>

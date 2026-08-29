@@ -31,11 +31,11 @@ export default function HubPage() {
   const t = useTranslations("hub");
   const locale = useLocale();
 
-  const guides = getGuides();
-  const reviews = getReviews();
-  const problems = getProblems();
-  const comparisons = getComparisons();
-  const bestCategories = getBestCategories();
+  const guides = getGuides(locale);
+  const reviews = getReviews(locale);
+  const problems = getProblems(locale);
+  const comparisons = getComparisons(locale);
+  const bestCategories = getBestCategories(locale);
 
   const sections = [
     {

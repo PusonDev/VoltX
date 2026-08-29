@@ -11,7 +11,7 @@ export default function ToolsPage() {
   const t = useTranslations("tools");
   const tc = useTranslations("common");
   const locale = useLocale();
-  const allProducts = getProducts();
+  const allProducts = getProducts(locale);
 
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [platformFilter, setPlatformFilter] = useState("all");

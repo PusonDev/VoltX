@@ -10,8 +10,7 @@ import type {
 } from "./types";
 
 /* ═══════════════════════════════════════
-   SEED DATA — Used when Supabase is not connected.
-   Replace with real Supabase queries in production.
+   SEED DATA — English Base
    ═══════════════════════════════════════ */
 
 export const seedProducts: Product[] = [
@@ -323,34 +322,167 @@ export const seedCampaigns: Campaign[] = [
 ];
 
 /* ═══════════════════════════════════════
-   HELPER — get data (Supabase or seed)
+   ARABIC TRANSLATED DATA
    ═══════════════════════════════════════ */
 
-export function getProducts(): Product[] {
-  // TODO: Replace with Supabase query when connected
+export const arabicProblems: Record<string, Partial<ProblemCluster>> = {
+  "employees-reusing-passwords": {
+    title: "إعادة استخدام الموظفين لكلمات المرور عبر الخدمات",
+    short_description: "يستخدم فريقك نفس كلمة المرور في كل مكان. أي اختراق لأي خدمة يعرض جميع حساباتك للخطر.",
+    long_description: "تعد إعادة استخدام كلمات المرور أكثر الثغرات الأمنية شيوعًا في الشركات الصغيرة. عندما يستخدم الموظفون نفس بيانات الاعتماد عبر خدمات متعددة، فإن اختراق أي خدمة يمكن أن يضر بالبنية التحتية لعملك بالكامل. هجمات حشو بيانات الاعتماد تنجح بمعدلات مقلقة بسبب هذا الخطأ.",
+  },
+  "remote-team-no-vpn": {
+    title: "فريق العمل عن بُعد يعمل بدون حماية VPN",
+    short_description: "يتصل موظفوك من المقاهي والشبكات المنزلية دون قنوات مشفرة. بيانات العملاء تنتقل بدون حماية.",
+    long_description: "جعل العمل عن بُعد أمان الشبكة أكثر صعوبة. عندما يتصل الموظفون بأنظمة عملك من المقاهي أو المساحات المشتركة، يمكن اعتراض حركة المرور الخاصة بهم. بدون شبكة VPN للأعمال، تكون بيانات العملاء الحساسة ومعلومات تسجيل الدخول عرضة للهجمات.",
+  },
+  "ransomware-fear-no-plan": {
+    title: "القلق من برامج الفدية بدون خطة وقاية مسبقة",
+    short_description: "لقد سمعت القصص المرعبة. لا تملك شركتك حماية للأجهزة الطرفية ولا خطة نسخ احتياطي ولا استجابة للحوادث.",
+    long_description: "زادت هجمات برامج الفدية (Ransomware) على الشركات الصغيرة بشكل كبير. متوسط الفدية يتجاوز 100,000 دولار، والعديد من الشركات الصغيرة التي تتعرض للهجوم لا تتعافى أبدًا. ومع ذلك، تفتقر معظم الشركات الصغيرة إلى الحماية المناسبة واستراتيجية النسخ الاحتياطي التلقائي.",
+  },
+  "no-idea-where-to-start": {
+    title: "مبتدئ تمامًا — لا تعرف من أين تبدأ بالأمان؟",
+    short_description: "أنت تعلم أن الأمان مهم لكن الخيارات كثيرة ومربكة. أنت بحاجة إلى نقطة بداية واضحة ومحددة.",
+    long_description: "يعلم العديد من أصحاب الأعمال الصغيرة أنه ينبغي عليهم فعل شيء ما بشأن الأمن السيبراني ولكنهم يشعرون بالحيرة من كثرة الخيارات والمصطلحات التقنية. هذه هي نقطة البداية الأكثر شيوعًا لمستخدمي فولت إكس. بدلاً من إرباكك بعشرات الأدوات، نحدد الخطوتين أو الثلاث خطوات الأكثر تأثيرًا التي يمكنك اتخاذها اليوم.",
+  },
+};
+
+export const arabicProducts: Record<string, Partial<Product>> = {
+  "1password-business": {
+    description: "إدارة كلمات المرور على مستوى المؤسسات للفرق. خزائن مشتركة، عناصر تحكم إدارية، ومراقبة الاختراقات للشركات الصغيرة.",
+    category: "إدارة كلمات المرور",
+    subcategory: "خزنة كلمات المرور للفريق",
+  },
+  "nordpass-business": {
+    description: "إدارة كلمات المرور من فريق NordVPN. بنية المعرفة الصفرية، فاحص خرق البيانات، وأسعار مناسبة للفرق.",
+    category: "إدارة كلمات المرور",
+    subcategory: "خزنة كلمات المرور للفريق",
+  },
+  "bitwarden-teams": {
+    description: "مدير كلمات مرور مفتوح المصدر بتشفير شامل. خيار الاستضافة الذاتية، أجهزة غير محدودة، والخطة الأكثر اقتصادية.",
+    category: "إدارة كلمات المرور",
+    subcategory: "خزنة كلمات المرور للفريق",
+  },
+  "surfshark-vpn": {
+    description: "VPN سريع بأجهزة غير محدودة، مانع الإعلانات CleanWeb، وخيارات IP مخصصة لفرق العمل عن بُعد.",
+    category: "شبكات VPN وأمان الشبكات",
+    subcategory: "VPN للأعمال",
+  },
+  "malwarebytes-endpoint": {
+    description: "حماية خفيفة للأجهزة الطرفية توقف برامج الفدية والبرمجيات الخبيثة. سهلة النشر بدون موظف تقني مخصص.",
+    category: "أمان الأجهزة الطرفية",
+    subcategory: "مكافحة الفيروسات والبرمجيات الخبيثة",
+  },
+};
+
+export const arabicReviews: Record<string, Partial<Review>> = {
+  "1password-business-review": {
+    title: "مراجعة 1Password Business: هل لا يزال أفضل مدير كلمات مرور للفرق في 2026؟",
+    excerpt: "اختبرنا 1Password Business لمدة 6 أشهر مع فريق عمل حقيقي. إليك تقييمنا الصادق لميزاته وعيوبه وما إذا كان يستحق سعره.",
+    content: "بعد ستة أشهر من الاستخدام اليومي مع فريق مكون من 12 شخصًا، يظل 1Password Business خيارنا الأول الموصى به لإدارة كلمات مرور الشركات الصغيرة — ولكنه ليس مثاليًا تمامًا.\n\n## ما قمنا باختباره\n\nقمنا بتطبيق 1Password Business عبر فريق الاختبار لدينا، وقمنا بنقل كلمات المرور المحفوظة في المتصفحات، وإعداد خزائن مشتركة لبيانات الفريق، واختبار الميزات الإدارية مثل سجلات الأنشطة.\n\n## المميزات الإيجابية\n\nواجهة 1Password هي الأكثر تميزًا في هذه الفئة. إضافة المتصفح تعمل بسلاسة فائقة، ونادرًا ما يفشل التعبئة التلقائية، كما اكتشفت ميزة Watchtower ثلاثة بيانات اعتماد مخترقة في أسبوعنا الأول.\n\n## السلبيات\n\nبسعر 7.99 دولار/مستخدم/شهر، يعتبر الخيار الأغلى. للفرق الأقل من 5 أشخاص، تتراكم التكلفة بسرعة.\n\n## الحكم النهائي\n\nإذا لم تكن الميزانية هي العائق الأساسي لديك، فإن 1Password هو الخيار الأكثر أمانًا واعتمادية.",
+    pros: [
+      "أفضل تجربة مستخدم وتصميم واجهة في فئته",
+      "ميزة Watchtower لمراقبة واكتشاف كلمات المرور المخترقة",
+      "إضافة متصفح ممتازة مع تعبئة تلقائية موثوقة",
+      "أدوات تحكم إدارية قوية وسجلات نشاط دقيقة",
+      "دعم شامل لجميع المنصات بما في ذلك Linux",
+    ],
+    cons: [
+      "الخيار الأكثر تكلفة في هذه الفئة",
+      "لا يوجد خيار للاستضافة الذاتية (Self-hosting)",
+      "لوحة تحكم المشرف تحتاج لمزيد من التفاصيل",
+      "لا توجد خطة مجانية بعد انتهاء التجربة لـ 14 يومًا",
+    ],
+    verdict: "أفضل مدير كلمات مرور شامل لفرق الشركات الصغيرة التي يمكنها تحمل تكلفته الممتازة. تجربة المستخدم الفائقة تضمن التزام الفريق باستخدامه.",
+  },
+};
+
+export const arabicGuides: Record<string, Partial<Guide>> = {
+  "password-manager-setup-guide": {
+    title: "كيفية إعداد مدير كلمات المرور لشركتك الصغيرة (دليل 2026)",
+    excerpt: "دليل خطوة بخطوة لنشر مدير كلمات المرور عبر فريقك — من اختيار الأداة المناسبة وحتى تبني الفريق بنسبة 100%.",
+    content: "يرشدك هذا الدليل الشامل خلال تقييم واختيار ونشر مدير كلمات المرور لفريق عملك الصغير. نغطي عملية النقل من المتصفحات، وكيفية إعداد الخزائن المشتركة، واستراتيجيات تشجيع الموظفين على استخدامه.\n\n## لماذا تعد مدراء كلمات المرور ضرورية\n\nيعيد الموظف العادي استخدام كلمات المرور عبر 14 خدمة مختلفة. عندما تتعرض أي من هذه الخدمات لاختراق، تتعرض جميع الحسابات للخطر. مدير كلمات المرور يقضي على هذا الخطر بإنشاء كلمات مرور فريدة ومعقدة لكل خدمة وتخزينها في خزنة مشفرة.\n\n## اختيار الأداة المناسبة\n\nنوصي بالبدء بأحد الخيارات الثلاثة التالية:\n\n1. **1Password Business** — الأفضل للفرق التي تريد تجربة سلسة مع تحكم إداري قوي\n2. **Bitwarden Teams** — أفضل قيمة والخيار الوحيد مع استضافة ذاتية\n3. **NordPass Business** — السعر الأكثر ملاءمة لكل مستخدم للفرق الصغيرة جدًا\n\n## خطوات النشر والتشغيل\n\n1. ابدأ بمجموعة تجريبية من 3 إلى 5 موظفين\n2. استيراد كلمات المرور الحالية من تخزين المتصفح\n3. إعداد خزائن مشتركة لبيانات الفريق\n4. تفعيل المصادقة الثنائية (2FA) على الخزنة نفسها\n5. جدولة شرح مدته 15 دقيقة للفريق بالكامل\n6. تحديد موعد نهائي لإلغاء كلمات مرور المتصفح القديمة",
+    category: "البداية السريعة",
+  },
+  "small-business-cybersecurity-checklist": {
+    title: "قائمة التحقق الأساسية للأمن السيبراني للشركات الصغيرة (2026)",
+    excerpt: "قائمة أمان عملية ومرتبة حسب الأولوية. ركز على الخطوات الأكثر تأثيرًا وحماية لعملك أولاً.",
+    content: "لا يجب أن يكون الأمن السيبراني معقدًا أو مربكًا. تحدد قائمة التحقق هذه الخطوات التي تمنحك أكبر قدر من الحماية بأقل جهد وتكلفة.\n\n## الأولوية 1: حرجة (قم بها هذا الأسبوع)\n\n- [ ] تفعيل مدير كلمات مرور وفرض كلمات مرور فريدة\n- [ ] تفعيل المصادقة الثنائية (2FA) على جميع الحسابات الهامة\n- [ ] التأكد من عمل نظام النسخ الاحتياطي واختبار استعادة البيانات\n\n## الأولوية 2: هامة (قم بها هذا الشهر)\n\n- [ ] تثبيت برامج حماية الأجهزة الطرفية على جميع أجهزة العمل\n- [ ] إعداد VPN للأعمال للموظفين عن بُعد\n- [ ] مراجعة صلاحيات المشرفين وإلغاء الأذونات غير الضرورية\n\n## الأولوية 3: متقدمة (خلال هذا الربع)\n\n- [ ] تطبيق حماية البريد الإلكتروني (DMARC, SPF, DKIM)\n- [ ] إنشاء خطة أساسية للاستجابة للحوادث الأمنية\n- [ ] جدولة مراجعات أمنية ربع سنوية",
+    category: "البداية السريعة",
+  },
+};
+
+export const arabicBestCategories: Record<string, Partial<BestCategory>> = {
+  "password-manager-for-small-business": {
+    title: "أفضل برامج إدارة كلمات المرور للشركات الصغيرة (2026)",
+    description: "قمنا باختبار ومقارنة جميع مدراء كلمات المرور الرئيسيين للفرق الصغيرة. إليك أفضل اختياراتنا مرتبة حسب درجة الملاءمة وليس العمولة.",
+  },
+};
+
+export const arabicComparisons: Record<string, Partial<Comparison>> = {
+  "1password-vs-nordpass": {
+    comparison_content: "يقوم كل من 1Password و NordPass بحل نفس المشكلة الأساسية — إدارة كلمات مرور الفريق — ولكنهما يتعاملان معها بشكل مختلف. يركز 1Password على تجربة المستخدم المتميزة والتحكم الإداري، بينما يوفر NordPass خيارًا أكثر اقتصادية.\n\n## السعر\n1Password: 7.99 دولار/مستخدم/شهر | NordPass: 3.99 دولار/مستخدم/شهر\n\nNordPass بنصف السعر تقريبًا، مما يجعله الفائز للفرق المهتمة بالميزانية.\n\n## الميزات\nيتفوق 1Password في أدوات المشرف وتنظيم الخزائن المشتركة ومراقبة الاختراق Watchtower. يوفر NordPass الأساسيات القوية مع ميزات إدارة فريق أقل تقدمًا.\n\n## اختيارنا\nللفرق ذات الميزانية الجيدة: **1Password**. للفرق المهتمة بالتكلفة: **NordPass**.",
+  },
+  "1password-vs-bitwarden": {
+    comparison_content: "المقارنة بين 1Password و Bitwarden هي مقارنة كلاسيكية بين الجودة الفائقة والقيمة الاقتصادية. كلاهما ممتاز — ويعتمد الاختيار على أولويات فريقك.\n\n## السعر\n1Password: 7.99 دولار/مستخدم/شهر | Bitwarden: 4.00 دولار/مستخدم/شهر\n\nBitwarden أرخص بكثير ويوفر خيار استضافة ذاتية للفرق التي تريد التحكم الكامل في بياناتها.\n\n## المصدر المفتوح\nBitwarden مفتوح المصدر بالكامل وتم تدقيقه بانتظام. 1Password مغلق المصدر ولكنه خضع لتدقيقات أمنية مستقلة.\n\n## اختيارنا\nلفرق المطورين أو الميزانية الاقتصادية: **Bitwarden**. للفرق الباحثة عن أسهل تجربة: **1Password**.",
+  },
+};
+
+/* ═══════════════════════════════════════
+   HELPER — get data with Locale Support
+   ═══════════════════════════════════════ */
+
+export function getProducts(locale: string = "en"): Product[] {
+  if (locale === "ar") {
+    return seedProducts.map((p) => {
+      const ar = arabicProducts[p.slug] || {};
+      return { ...p, ...ar };
+    });
+  }
   return seedProducts;
 }
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return seedProducts.find((p) => p.slug === slug);
+export function getProductBySlug(slug: string, locale: string = "en"): Product | undefined {
+  const p = seedProducts.find((p) => p.slug === slug);
+  if (!p) return undefined;
+  if (locale === "ar") {
+    const ar = arabicProducts[slug] || {};
+    return { ...p, ...ar };
+  }
+  return p;
 }
 
-export function getProblems(): ProblemCluster[] {
+export function getProblems(locale: string = "en"): ProblemCluster[] {
+  if (locale === "ar") {
+    return seedProblems.map((prob) => {
+      const ar = arabicProblems[prob.slug] || {};
+      return { ...prob, ...ar };
+    });
+  }
   return seedProblems;
 }
 
-export function getProblemBySlug(slug: string): ProblemCluster | undefined {
-  return seedProblems.find((p) => p.slug === slug);
+export function getProblemBySlug(slug: string, locale: string = "en"): ProblemCluster | undefined {
+  const prob = seedProblems.find((p) => p.slug === slug);
+  if (!prob) return undefined;
+  if (locale === "ar") {
+    const ar = arabicProblems[slug] || {};
+    return { ...prob, ...ar };
+  }
+  return prob;
 }
 
-export function getProductsForProblem(problemId: string): (Product & { fit_score_for_problem: number; fit_explanation: string })[] {
+export function getProductsForProblem(problemId: string, locale: string = "en"): (Product & { fit_score_for_problem: number; fit_explanation: string })[] {
   const fits = seedProductProblemFits
     .filter((f) => f.problem_id === problemId)
     .sort((a, b) => b.fit_score - a.fit_score);
 
+  const localizedProducts = getProducts(locale);
+
   return fits
     .map((fit) => {
-      const product = seedProducts.find((p) => p.id === fit.product_id);
+      const product = localizedProducts.find((p) => p.id === fit.product_id);
       if (!product) return null;
       return {
         ...product,
@@ -361,36 +493,84 @@ export function getProductsForProblem(problemId: string): (Product & { fit_score
     .filter(Boolean) as (Product & { fit_score_for_problem: number; fit_explanation: string })[];
 }
 
-export function getGuides(): Guide[] {
+export function getGuides(locale: string = "en"): Guide[] {
+  if (locale === "ar") {
+    return seedGuides.map((g) => {
+      const ar = arabicGuides[g.slug] || {};
+      return { ...g, ...ar };
+    });
+  }
   return seedGuides;
 }
 
-export function getGuideBySlug(slug: string): Guide | undefined {
-  return seedGuides.find((g) => g.slug === slug);
+export function getGuideBySlug(slug: string, locale: string = "en"): Guide | undefined {
+  const g = seedGuides.find((item) => item.slug === slug);
+  if (!g) return undefined;
+  if (locale === "ar") {
+    const ar = arabicGuides[slug] || {};
+    return { ...g, ...ar };
+  }
+  return g;
 }
 
-export function getReviews(): Review[] {
+export function getReviews(locale: string = "en"): Review[] {
+  if (locale === "ar") {
+    return seedReviews.map((r) => {
+      const ar = arabicReviews[r.slug] || {};
+      return { ...r, ...ar };
+    });
+  }
   return seedReviews;
 }
 
-export function getReviewBySlug(slug: string): Review | undefined {
-  return seedReviews.find((r) => r.slug === slug);
+export function getReviewBySlug(slug: string, locale: string = "en"): Review | undefined {
+  const r = seedReviews.find((item) => item.slug === slug);
+  if (!r) return undefined;
+  if (locale === "ar") {
+    const ar = arabicReviews[slug] || {};
+    return { ...r, ...ar };
+  }
+  return r;
 }
 
-export function getBestCategories(): BestCategory[] {
+export function getBestCategories(locale: string = "en"): BestCategory[] {
+  if (locale === "ar") {
+    return seedBestCategories.map((b) => {
+      const ar = arabicBestCategories[b.slug] || {};
+      return { ...b, ...ar };
+    });
+  }
   return seedBestCategories;
 }
 
-export function getBestCategoryBySlug(slug: string): BestCategory | undefined {
-  return seedBestCategories.find((b) => b.slug === slug);
+export function getBestCategoryBySlug(slug: string, locale: string = "en"): BestCategory | undefined {
+  const b = seedBestCategories.find((item) => item.slug === slug);
+  if (!b) return undefined;
+  if (locale === "ar") {
+    const ar = arabicBestCategories[slug] || {};
+    return { ...b, ...ar };
+  }
+  return b;
 }
 
-export function getComparisons(): Comparison[] {
+export function getComparisons(locale: string = "en"): Comparison[] {
+  if (locale === "ar") {
+    return seedComparisons.map((c) => {
+      const ar = arabicComparisons[c.slug] || {};
+      return { ...c, ...ar };
+    });
+  }
   return seedComparisons;
 }
 
-export function getComparisonBySlug(slug: string): Comparison | undefined {
-  return seedComparisons.find((c) => c.slug === slug);
+export function getComparisonBySlug(slug: string, locale: string = "en"): Comparison | undefined {
+  const c = seedComparisons.find((item) => item.slug === slug);
+  if (!c) return undefined;
+  if (locale === "ar") {
+    const ar = arabicComparisons[slug] || {};
+    return { ...c, ...ar };
+  }
+  return c;
 }
 
 export function getCampaigns(): Campaign[] {

@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ReviewPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const review = getReviewBySlug(slug);
+  const review = getReviewBySlug(slug, locale);
   if (!review) notFound();
 
   const tr = await getTranslations({ locale, namespace: "review" });
@@ -49,7 +49,8 @@ export default async function ReviewPage({ params }: { params: Promise<{ locale:
   const product = getProductBySlug(
     review.product_id === "p1" ? "1password-business" :
     review.product_id === "p2" ? "nordpass-business" :
-    review.product_id === "p3" ? "bitwarden-teams" : ""
+    review.product_id === "p3" ? "bitwarden-teams" : "",
+    locale
   );
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";

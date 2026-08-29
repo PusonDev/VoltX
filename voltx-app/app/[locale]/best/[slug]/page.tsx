@@ -4,8 +4,8 @@ import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/shared/ScrollReveal";
 import ProductCard from "@/components/shared/ProductCard";
-import TranslationPending from "@/components/shared/TranslationPending";
-import { getBestCategories, getBestCategoryBySlug, seedProducts } from "@/lib/supabase/seed";
+import { getBestCategories, getBestCategoryBySlug, getProducts } from "@/lib/supabase/seed";
+import type { Product } from "@/lib/supabase/types";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 interface PageProps {
@@ -19,7 +19,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale, slug } = await params;
-  const category = getBestCategoryBySlug(slug);
+  const category = getBestCategoryBySlug(slug, locale);
   if (!category) return {};
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
@@ -39,15 +39,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BestPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const category = getBestCategoryBySlug(slug);
+  const category = getBestCategoryBySlug(slug, locale);
   if (!category) notFound();
 
   const tc = await getTranslations({ locale, namespace: "common" });
   const th = await getTranslations({ locale, namespace: "hub" });
 
+  const localizedProducts: Product[] = getProducts(locale);
   const products = category.product_ids
-    .map((id) => seedProducts.find((p) => p.id === id))
-    .filter(Boolean);
+    .map((id) => localizedProducts.find((p) => p.id === id))
+    .filter(Boolean) as Product[];
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://voltx.com";
 
@@ -63,8 +64,6 @@ export default async function BestPage({ params }: { params: Promise<{ locale: s
 
       <section className="py-16">
         <Container>
-          {locale !== "en" && <TranslationPending />}
-
           <ScrollReveal>
             <nav className="text-sm text-text-muted mb-8">
               <a href={`/${locale}`} className="hover:text-primary transition-colors">{tc("home")}</a>
@@ -84,9 +83,9 @@ export default async function BestPage({ params }: { params: Promise<{ locale: s
 
           <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {products.map((product, i) => (
-              <ScrollReveal key={product!.id} delay={i * 100}>
+              <ScrollReveal key={product.id} delay={i * 100}>
                 <ProductCard
-                  product={product!}
+                  product={product}
                   pageSlug={category.slug}
                   placement="best-category"
                 />

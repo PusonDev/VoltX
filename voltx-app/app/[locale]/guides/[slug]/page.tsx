@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function GuidePage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { locale, slug } = await params;
-  const guide = getGuideBySlug(slug);
+  const guide = getGuideBySlug(slug, locale);
   if (!guide) notFound();
 
   const tc = await getTranslations({ locale, namespace: "common" });
