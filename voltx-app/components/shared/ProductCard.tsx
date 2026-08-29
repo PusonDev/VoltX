@@ -11,6 +11,9 @@ interface ProductCardProps {
   product: Product;
   fitScore?: number;
   fitExplanation?: string;
+  recommendedBecause?: string[];
+  notIdealIf?: string[];
+  segmentLabel?: string; // "Best match", "Best value", etc.
   pageSlug?: string;
   placement?: string;
 }
@@ -19,6 +22,9 @@ export default function ProductCard({
   product,
   fitScore,
   fitExplanation,
+  recommendedBecause,
+  notIdealIf,
+  segmentLabel,
   pageSlug = "",
   placement = "card",
 }: ProductCardProps) {
@@ -32,8 +38,6 @@ export default function ProductCard({
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
-    // Only apply hover effect on desktop (rough check using matchMedia or just apply to all and let mobile rely on clicks)
-    // Actually, on mobile, touch events can trigger mouseenter, but it's safer to just clear any closing timeout
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       setGuideOpen(true);
@@ -73,6 +77,15 @@ export default function ProductCard({
 
   return (
     <Card className="flex flex-col h-full">
+      {/* Segment Label */}
+      {segmentLabel && (
+        <div className="mb-3">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-md bg-primary/10 text-primary border border-primary/20">
+            {segmentLabel}
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <div>
@@ -99,6 +112,40 @@ export default function ProductCard({
       {fitExplanation && (
         <div className="bg-primary-tint rounded-lg p-3 mb-4">
           <p className="text-sm text-primary-dark">{fitExplanation}</p>
+        </div>
+      )}
+
+      {/* Recommended because — v4 card format */}
+      {recommendedBecause && recommendedBecause.length > 0 && (
+        <div className="mb-4 bg-primary-tint/40 rounded-lg p-3 border border-primary/10">
+          <p className="text-xs font-semibold text-primary-dark uppercase tracking-wide mb-2">
+            {t("recommendedBecause")}
+          </p>
+          <ul className="space-y-1.5">
+            {recommendedBecause.map((reason, idx) => (
+              <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
+                <span className="text-primary mt-0.5 flex-shrink-0">✔</span>
+                <span>{reason}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Not ideal if — v4 card format */}
+      {notIdealIf && notIdealIf.length > 0 && (
+        <div className="mb-4 bg-amber-500/5 rounded-lg p-3 border border-amber-500/10">
+          <p className="text-xs font-semibold text-amber-600 uppercase tracking-wide mb-2">
+            {t("notIdealIf")}
+          </p>
+          <ul className="space-y-1.5">
+            {notIdealIf.map((scenario, idx) => (
+              <li key={idx} className="flex items-start gap-2 text-sm text-text-secondary">
+                <span className="text-amber-500 mt-0.5 flex-shrink-0">✕</span>
+                <span>{scenario}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

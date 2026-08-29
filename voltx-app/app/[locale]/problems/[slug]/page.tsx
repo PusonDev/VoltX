@@ -115,6 +115,8 @@ export default async function ProblemPage({ params }: { params: Promise<{ locale
                       product={product}
                       fitScore={product.fit_score_for_problem}
                       fitExplanation={product.fit_explanation}
+                      recommendedBecause={product.recommended_because}
+                      notIdealIf={product.not_ideal_if}
                       pageSlug={problem.slug}
                       placement="problem-page"
                     />

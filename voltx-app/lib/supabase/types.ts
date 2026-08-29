@@ -4,16 +4,28 @@ export type AffiliateStatus =
   | "pending-verification"
   | "approved";
 
+/* ─── Vendor Entity (normalized) ─── */
+export interface Vendor {
+  id: string;
+  slug: string;
+  name: string;
+  website: string;
+  hq_country: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
   name: string;
   vendor: string;
+  vendor_id: string; // FK → vendors
   category: string;
   subcategory: string | null;
   description: string;
   target_segment: string[];
   platforms: string[];
+  available_countries: string[] | null; // null = worldwide
+  available_languages: string[] | null; // content/support language availability
   pricing_model: string;
   price_from: number | null;
   recurring: boolean;
@@ -27,6 +39,8 @@ export interface Product {
   last_verified_at: string | null;
   editorial_score: number;
   fit_score: number;
+  search_demand_internal: number | null; // ADMIN ONLY — never render publicly
+  competition_internal: number | null;   // ADMIN ONLY — never render publicly
   internal_notes: string | null; // NEVER render on public pages
   setup_guide_en?: string[];
   setup_guide_ar?: string[];
@@ -40,10 +54,15 @@ export interface ProblemCluster {
   title: string;
   short_description: string;
   long_description?: string;
-  urgency_score: number;
-  buyer_intent_score: number;
+  urgency_score: number;       // ADMIN/INTERNAL ONLY — never render publicly
+  buyer_intent_score: number;  // ADMIN/INTERNAL ONLY — never render publicly
   evergreen_score: number;
   competition_score: number;
+  /* Public-facing copy (replaces raw score display) */
+  why_it_matters_en: string;
+  why_it_matters_ar: string;
+  what_you_need_en: string;
+  what_you_need_ar: string;
 }
 
 export interface ProductProblemFit {
@@ -51,6 +70,11 @@ export interface ProductProblemFit {
   problem_id: string;
   fit_score: number;
   explanation: string;
+  /* "Why recommended / Not ideal if" card sections */
+  recommended_because_en: string[];
+  recommended_because_ar: string[];
+  not_ideal_if_en: string[];
+  not_ideal_if_ar: string[];
 }
 
 export interface Lead {

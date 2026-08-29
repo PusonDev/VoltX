@@ -1,5 +1,6 @@
 import type {
   Product,
+  Vendor,
   ProblemCluster,
   ProductProblemFit,
   Guide,
@@ -10,14 +11,55 @@ import type {
 } from "./types";
 
 /* ═══════════════════════════════════════
-   SEED DATA — Master Spec v2
+   SEED DATA — Master Spec v2 + Addendum v4
    
    Rules:
    - affiliate_status = 'pending-verification' by default.
    - affiliate_url = null by default (no fake / auto ?ref=voltx params).
    - Only products manually set to affiliate_status === 'approved' and possessing
      a valid affiliate_url are exposed to public pages.
+   - search_demand_internal / competition_internal are ADMIN-ONLY — never render.
+   - urgency_score / buyer_intent_score are ADMIN-ONLY — never render on public pages.
+     Use why_it_matters_* and what_you_need_* for public display instead.
+   
+   SEO PATTERN RULE (Addendum v4 Section 5):
+   When creating new slugs/titles for /guides, /problems, /best pages, target
+   "[solution] for [specific audience]" phrases, NOT generic category keywords.
+   Examples: "password management for remote teams", "secure remote access for
+   small agencies" — NOT "best password manager" or "cybersecurity software".
    ═══════════════════════════════════════ */
+
+/* ─── Vendors (normalized from products) ─── */
+export const seedVendors: Vendor[] = [
+  {
+    id: "v1",
+    slug: "1password",
+    name: "1Password",
+    website: "https://1password.com",
+    hq_country: "CA",
+  },
+  {
+    id: "v2",
+    slug: "nord-security",
+    name: "Nord Security",
+    website: "https://nordsecurity.com",
+    hq_country: "PA",
+  },
+  {
+    id: "v3",
+    slug: "surfshark",
+    name: "Surfshark",
+    website: "https://surfshark.com",
+    hq_country: "NL",
+  },
+  {
+    id: "v4",
+    slug: "malwarebytes",
+    name: "Malwarebytes",
+    website: "https://www.malwarebytes.com",
+    hq_country: "US",
+  },
+];
 
 export const seedProducts: Product[] = [
   {
@@ -25,12 +67,15 @@ export const seedProducts: Product[] = [
     slug: "1password-business",
     name: "1Password Business",
     vendor: "1Password",
+    vendor_id: "v1",
     category: "Password Management",
     subcategory: "Team Password Vault",
     description:
       "Enterprise-grade password management for teams. Shared vaults, admin controls, and breach monitoring built for small businesses scaling security.",
     target_segment: ["small-business", "startup", "remote-team"],
     platforms: ["Windows", "macOS", "iOS", "Android", "Linux", "Web"],
+    available_countries: null, // worldwide
+    available_languages: ["en", "ar", "de", "fr", "es", "ja", "ko", "pt", "zh"],
     pricing_model: "per-user",
     price_from: 7.99,
     recurring: true,
@@ -44,6 +89,8 @@ export const seedProducts: Product[] = [
     last_verified_at: "2026-08-15T00:00:00Z",
     editorial_score: 9.2,
     fit_score: 9.5,
+    search_demand_internal: 8.5,
+    competition_internal: 7.0,
     internal_notes: "Apply via Impact. 25% recurring commission.",
     setup_guide_en: [
       "1. Create admin account and set up a master team password.",
@@ -65,12 +112,15 @@ export const seedProducts: Product[] = [
     slug: "nordpass-business",
     name: "NordPass Business",
     vendor: "Nord Security",
+    vendor_id: "v2",
     category: "Password Management",
     subcategory: "Team Password Vault",
     description:
       "Password management by the NordVPN team. Zero-knowledge architecture, data breach scanner, and affordable team pricing.",
     target_segment: ["small-business", "freelancer"],
     platforms: ["Windows", "macOS", "iOS", "Android", "Linux", "Web"],
+    available_countries: null, // worldwide
+    available_languages: ["en", "ar", "de", "fr", "es", "it", "nl", "pl"],
     pricing_model: "per-user",
     price_from: 3.99,
     recurring: true,
@@ -84,6 +134,8 @@ export const seedProducts: Product[] = [
     last_verified_at: "2026-08-10T00:00:00Z",
     editorial_score: 8.1,
     fit_score: 8.4,
+    search_demand_internal: 6.5,
+    competition_internal: 6.0,
     internal_notes: "Flat $40 per sale via CJ.",
     setup_guide_en: [
       "1. Sign up for the business plan and access the Admin Panel.",
@@ -105,12 +157,15 @@ export const seedProducts: Product[] = [
     slug: "surfshark-vpn",
     name: "Surfshark for Teams",
     vendor: "Surfshark",
+    vendor_id: "v3",
     category: "VPN & Network Security",
     subcategory: "Business VPN",
     description:
       "Fast VPN with unlimited devices, CleanWeb ad/tracker blocker, and dedicated IP options for small business teams working remotely.",
     target_segment: ["small-business", "remote-team", "freelancer"],
     platforms: ["Windows", "macOS", "iOS", "Android", "Linux"],
+    available_countries: null, // worldwide
+    available_languages: ["en", "de", "fr", "es", "it", "pt", "zh", "ja"],
     pricing_model: "flat",
     price_from: 2.49,
     recurring: true,
@@ -124,6 +179,8 @@ export const seedProducts: Product[] = [
     last_verified_at: "2026-08-18T00:00:00Z",
     editorial_score: 8.3,
     fit_score: 8.0,
+    search_demand_internal: 7.0,
+    competition_internal: 6.5,
     internal_notes: "40% recurring via ShareASale.",
     setup_guide_en: [
       "1. Purchase the team plan and login to the dashboard.",
@@ -145,12 +202,15 @@ export const seedProducts: Product[] = [
     slug: "malwarebytes-endpoint",
     name: "Malwarebytes Endpoint Protection",
     vendor: "Malwarebytes",
+    vendor_id: "v4",
     category: "Endpoint Security",
     subcategory: "Antivirus & Anti-Malware",
     description:
       "Lightweight endpoint protection that stops ransomware, malware, and zero-day threats. Simple deployment for teams without a dedicated IT person.",
     target_segment: ["small-business", "startup"],
     platforms: ["Windows", "macOS"],
+    available_countries: null, // worldwide
+    available_languages: ["en", "de", "fr", "es", "pt", "it"],
     pricing_model: "per-device",
     price_from: 6.0,
     recurring: true,
@@ -164,6 +224,8 @@ export const seedProducts: Product[] = [
     last_verified_at: "2026-07-25T00:00:00Z",
     editorial_score: 8.5,
     fit_score: 8.7,
+    search_demand_internal: 7.5,
+    competition_internal: 5.0,
     internal_notes: "Application at CJ. 20% commission.",
     setup_guide_en: [
       "1. Log into the Nebula cloud console.",
@@ -195,6 +257,10 @@ export const seedProblems: ProblemCluster[] = [
     buyer_intent_score: 8,
     evergreen_score: 10,
     competition_score: 7,
+    why_it_matters_en: "A single breached password can unlock your email, cloud storage, banking, and every tool your team uses. Credential stuffing attacks succeed because most employees reuse the same password across 14+ services.",
+    why_it_matters_ar: "كلمة مرور واحدة مخترقة يمكن أن تفتح بريدك الإلكتروني وتخزينك السحابي وحساباتك البنكية وكل أداة يستخدمها فريقك. هجمات حشو بيانات الاعتماد تنجح لأن معظم الموظفين يعيدون استخدام نفس كلمة المرور عبر أكثر من 14 خدمة.",
+    what_you_need_en: "A team password manager that generates unique passwords, stores them securely, and makes sharing credentials across your team safe and auditable.",
+    what_you_need_ar: "مدير كلمات مرور للفريق يولّد كلمات مرور فريدة ويخزنها بأمان ويجعل مشاركة بيانات الاعتماد عبر فريقك آمنة وقابلة للتتبع.",
   },
   {
     id: "prob2",
@@ -208,6 +274,10 @@ export const seedProblems: ProblemCluster[] = [
     buyer_intent_score: 7,
     evergreen_score: 9,
     competition_score: 6,
+    why_it_matters_en: "Every time your team connects from a café, airport, or home network, their traffic can be intercepted. Client data, internal messages, and login credentials travel unprotected across networks you don't control.",
+    why_it_matters_ar: "في كل مرة يتصل فريقك من مقهى أو مطار أو شبكة منزلية، يمكن اعتراض حركة المرور الخاصة بهم. بيانات العملاء والرسائل الداخلية وبيانات تسجيل الدخول تنتقل بدون حماية عبر شبكات لا تتحكم فيها.",
+    what_you_need_en: "A business VPN that encrypts all traffic, supports unlimited devices, and is simple enough for non-technical team members to use daily.",
+    what_you_need_ar: "شبكة VPN للأعمال تشفر كل حركة المرور وتدعم أجهزة غير محدودة وبسيطة بما يكفي ليستخدمها أعضاء الفريق غير التقنيين يومياً.",
   },
   {
     id: "prob3",
@@ -221,6 +291,10 @@ export const seedProblems: ProblemCluster[] = [
     buyer_intent_score: 9,
     evergreen_score: 9,
     competition_score: 5,
+    why_it_matters_en: "Ransomware attacks on small businesses have increased 300% in two years. The average ransom exceeds $100,000, and 60% of small businesses that suffer an attack close within 6 months. Prevention is dramatically cheaper than recovery.",
+    why_it_matters_ar: "زادت هجمات برامج الفدية على الشركات الصغيرة بنسبة 300% في عامين. متوسط الفدية يتجاوز 100,000 دولار، و60% من الشركات الصغيرة التي تتعرض للهجوم تغلق خلال 6 أشهر. الوقاية أرخص بكثير من التعافي.",
+    what_you_need_en: "Endpoint protection that blocks ransomware before it encrypts your files, paired with an automated backup strategy so you can recover without paying.",
+    what_you_need_ar: "حماية للأجهزة الطرفية تمنع برامج الفدية قبل أن تشفر ملفاتك، مع استراتيجية نسخ احتياطي تلقائي حتى تتمكن من التعافي بدون دفع فدية.",
   },
   {
     id: "prob4",
@@ -234,15 +308,134 @@ export const seedProblems: ProblemCluster[] = [
     buyer_intent_score: 10,
     evergreen_score: 10,
     competition_score: 4,
+    why_it_matters_en: "The longer you wait, the more exposed your business is. But starting with the wrong tools wastes money and gives false confidence. You need the right 2–3 steps for your specific situation — not a generic checklist.",
+    why_it_matters_ar: "كلما طال انتظارك، زاد تعرض عملك للخطر. لكن البدء بالأدوات الخاطئة يهدر المال ويمنحك ثقة زائفة. تحتاج إلى الخطوتين أو الثلاث خطوات الصحيحة لوضعك المحدد — وليس قائمة تحقق عامة.",
+    what_you_need_en: "A guided assessment that identifies your specific risks and gives you a clear, prioritized action plan — starting with the highest-impact, easiest-to-implement steps.",
+    what_you_need_ar: "تقييم موجه يحدد مخاطرك المحددة ويمنحك خطة عمل واضحة ومرتبة حسب الأولوية — تبدأ بالخطوات الأعلى تأثيراً والأسهل تنفيذاً.",
   },
 ];
 
 export const seedProductProblemFits: ProductProblemFit[] = [
-  { product_id: "p1", problem_id: "prob1", fit_score: 9.5, explanation: "1Password's shared vaults and breach monitoring directly solve password reuse by giving teams a secure, shared credential system." },
-  { product_id: "p2", problem_id: "prob1", fit_score: 8.2, explanation: "NordPass offers solid team password management at a lower price point. Good for smaller teams with budget constraints." },
-  { product_id: "p4", problem_id: "prob2", fit_score: 8.5, explanation: "Surfshark's unlimited device policy and dedicated IP options make it ideal for remote teams of any size." },
-  { product_id: "p5", problem_id: "prob3", fit_score: 8.7, explanation: "Malwarebytes stops ransomware at the endpoint level. Simple to deploy for teams without a dedicated IT person." },
-  { product_id: "p1", problem_id: "prob4", fit_score: 9.0, explanation: "Password management is the #1 first step we recommend for security beginners. 1Password makes it easy." },
+  {
+    product_id: "p1",
+    problem_id: "prob1",
+    fit_score: 9.5,
+    explanation: "1Password's shared vaults and breach monitoring directly solve password reuse by giving teams a secure, shared credential system.",
+    recommended_because_en: [
+      "Shared vaults let your team stop reusing credentials across services",
+      "Watchtower alerts you when any team password appears in a data breach",
+      "Admin controls let you enforce unique passwords org-wide",
+    ],
+    recommended_because_ar: [
+      "الخزائن المشتركة تتيح لفريقك التوقف عن إعادة استخدام بيانات الاعتماد عبر الخدمات",
+      "ميزة Watchtower تنبهك عندما تظهر أي كلمة مرور في اختراق بيانات",
+      "أدوات التحكم الإدارية تتيح لك فرض كلمات مرور فريدة على مستوى المؤسسة",
+    ],
+    not_ideal_if_en: [
+      "You're a solo freelancer with fewer than 3 accounts to manage",
+      "Your budget is under $5/user/month — NordPass may be a better fit",
+    ],
+    not_ideal_if_ar: [
+      "إذا كنت مستقلاً بأقل من 3 حسابات لإدارتها",
+      "إذا كانت ميزانيتك أقل من 5 دولارات/مستخدم/شهر — قد يكون NordPass أنسب",
+    ],
+  },
+  {
+    product_id: "p2",
+    problem_id: "prob1",
+    fit_score: 8.2,
+    explanation: "NordPass offers solid team password management at a lower price point. Good for smaller teams with budget constraints.",
+    recommended_because_en: [
+      "Nearly half the cost of premium alternatives at $3.99/user/month",
+      "Data Breach Scanner proactively checks if team credentials have been exposed",
+      "Zero-knowledge architecture means even NordPass can't read your passwords",
+    ],
+    recommended_because_ar: [
+      "تكلفة أقل بنصف تقريباً من البدائل المتميزة بسعر 3.99 دولار/مستخدم/شهر",
+      "ماسح خرق البيانات يتحقق بشكل استباقي مما إذا كانت بيانات اعتماد الفريق قد تم كشفها",
+      "بنية المعرفة الصفرية تعني أنه حتى NordPass لا يمكنه قراءة كلمات مرورك",
+    ],
+    not_ideal_if_en: [
+      "You need granular admin controls and detailed activity logging",
+      "Your team is larger than 20 people — 1Password scales better for larger orgs",
+    ],
+    not_ideal_if_ar: [
+      "إذا كنت تحتاج لأدوات تحكم إدارية دقيقة وسجلات نشاط مفصلة",
+      "إذا كان فريقك أكبر من 20 شخصاً — 1Password يتوسع بشكل أفضل للمؤسسات الأكبر",
+    ],
+  },
+  {
+    product_id: "p4",
+    problem_id: "prob2",
+    fit_score: 8.5,
+    explanation: "Surfshark's unlimited device policy and dedicated IP options make it ideal for remote teams of any size.",
+    recommended_because_en: [
+      "Unlimited devices per account — no per-seat surcharge as your team grows",
+      "CleanWeb blocks ads, trackers, and malicious sites before they reach your team",
+      "Dedicated IP option lets you whitelist a static IP for secure server access",
+    ],
+    recommended_because_ar: [
+      "أجهزة غير محدودة لكل حساب — لا رسوم إضافية لكل مقعد مع نمو فريقك",
+      "CleanWeb يحظر الإعلانات والمتتبعات والمواقع الضارة قبل وصولها لفريقك",
+      "خيار IP المخصص يتيح لك إضافة IP ثابت للوصول الآمن للخوادم",
+    ],
+    not_ideal_if_en: [
+      "You need enterprise-grade split tunneling with per-app rules",
+      "Your business requires a VPN with SOC 2 compliance certification",
+    ],
+    not_ideal_if_ar: [
+      "إذا كنت تحتاج لتقسيم نفق على مستوى المؤسسة مع قواعد لكل تطبيق",
+      "إذا كانت شركتك تتطلب VPN بشهادة امتثال SOC 2",
+    ],
+  },
+  {
+    product_id: "p5",
+    problem_id: "prob3",
+    fit_score: 8.7,
+    explanation: "Malwarebytes stops ransomware at the endpoint level. Simple to deploy for teams without a dedicated IT person.",
+    recommended_because_en: [
+      "Real-time ransomware rollback reverses encryption if an attack gets through",
+      "Cloud-managed console means no on-premise server needed — deploy in minutes",
+      "Lightweight agent won't slow down employee laptops like traditional antivirus",
+    ],
+    recommended_because_ar: [
+      "استعادة برامج الفدية في الوقت الفعلي تعكس التشفير إذا نجح هجوم",
+      "وحدة التحكم المدارة سحابياً تعني عدم الحاجة لخادم محلي — انشر في دقائق",
+      "العميل الخفيف لن يبطئ أجهزة الموظفين مثل برامج مكافحة الفيروسات التقليدية",
+    ],
+    not_ideal_if_en: [
+      "You also need mobile device protection — Malwarebytes business is desktop-only",
+      "You need a bundled backup solution — Malwarebytes focuses on prevention, not recovery",
+    ],
+    not_ideal_if_ar: [
+      "إذا كنت تحتاج أيضاً لحماية الأجهزة المحمولة — Malwarebytes للأعمال لسطح المكتب فقط",
+      "إذا كنت تحتاج لحل نسخ احتياطي مدمج — Malwarebytes يركز على الوقاية وليس التعافي",
+    ],
+  },
+  {
+    product_id: "p1",
+    problem_id: "prob4",
+    fit_score: 9.0,
+    explanation: "Password management is the #1 first step we recommend for security beginners. 1Password makes it easy.",
+    recommended_because_en: [
+      "Password management is the single highest-impact first step for security beginners",
+      "Intuitive interface means your team will actually use it — no IT background needed",
+      "Watchtower shows you exactly which existing passwords are already compromised",
+    ],
+    recommended_because_ar: [
+      "إدارة كلمات المرور هي الخطوة الأولى الأعلى تأثيراً للمبتدئين في الأمان",
+      "الواجهة البديهية تعني أن فريقك سيستخدمها فعلاً — لا حاجة لخلفية تقنية",
+      "Watchtower يوضح لك بالضبط أي كلمات مرور حالية مخترقة بالفعل",
+    ],
+    not_ideal_if_en: [
+      "You're a solo freelancer with fewer than 3 accounts to manage",
+      "Your budget is under $5/user/month — NordPass may be a better fit",
+    ],
+    not_ideal_if_ar: [
+      "إذا كنت مستقلاً بأقل من 3 حسابات لإدارتها",
+      "إذا كانت ميزانيتك أقل من 5 دولارات/مستخدم/شهر — قد يكون NordPass أنسب",
+    ],
+  },
 ];
 
 export const seedGuides: Guide[] = [
@@ -489,7 +682,7 @@ export function getProblemBySlug(slug: string, locale: string = "en"): ProblemCl
   return prob;
 }
 
-export function getProductsForProblem(problemId: string, locale: string = "en"): (Product & { fit_score_for_problem: number; fit_explanation: string })[] {
+export function getProductsForProblem(problemId: string, locale: string = "en"): (Product & { fit_score_for_problem: number; fit_explanation: string; recommended_because: string[]; not_ideal_if: string[] })[] {
   const fits = seedProductProblemFits
     .filter((f) => f.problem_id === problemId)
     .sort((a, b) => b.fit_score - a.fit_score);
@@ -505,9 +698,33 @@ export function getProductsForProblem(problemId: string, locale: string = "en"):
         ...product,
         fit_score_for_problem: fit.fit_score,
         fit_explanation: fit.explanation,
+        recommended_because: locale === "ar" ? fit.recommended_because_ar : fit.recommended_because_en,
+        not_ideal_if: locale === "ar" ? fit.not_ideal_if_ar : fit.not_ideal_if_en,
       };
     })
-    .filter(Boolean) as (Product & { fit_score_for_problem: number; fit_explanation: string })[];
+    .filter(Boolean) as (Product & { fit_score_for_problem: number; fit_explanation: string; recommended_because: string[]; not_ideal_if: string[] })[];
+}
+
+/* ─── Vendor helpers ─── */
+export function getVendors(): Vendor[] {
+  return seedVendors;
+}
+
+export function getVendorById(id: string): Vendor | undefined {
+  return seedVendors.find((v) => v.id === id);
+}
+
+export function getVendorBySlug(slug: string): Vendor | undefined {
+  return seedVendors.find((v) => v.slug === slug);
+}
+
+/* ─── Fit helpers ─── */
+export function getProductProblemFits(locale: string = "en"): (ProductProblemFit & { recommended_because: string[]; not_ideal_if: string[] })[] {
+  return seedProductProblemFits.map((fit) => ({
+    ...fit,
+    recommended_because: locale === "ar" ? fit.recommended_because_ar : fit.recommended_because_en,
+    not_ideal_if: locale === "ar" ? fit.not_ideal_if_ar : fit.not_ideal_if_en,
+  }));
 }
 
 export function getGuides(locale: string = "en"): Guide[] {
