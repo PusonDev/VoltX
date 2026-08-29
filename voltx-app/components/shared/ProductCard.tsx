@@ -41,14 +41,15 @@ export default function ProductCard({
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       setGuideOpen(true);
-    }, 150);
+    }, 80);
   };
 
   const handleMouseLeave = () => {
     if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
+    // Hold for 600ms so user has time to read and it doesn't snap closed immediately
     hoverTimeoutRef.current = setTimeout(() => {
       setGuideOpen(false);
-    }, 150);
+    }, 600);
   };
 
   // Cleanup timeout on unmount
@@ -236,13 +237,13 @@ export default function ProductCard({
         >
           <button
             onClick={() => setGuideOpen(!guideOpen)}
-            className="flex items-center justify-between w-full text-sm font-medium text-text-secondary hover:text-primary transition-colors"
+            className="flex items-center justify-between w-full text-xs font-semibold text-text-secondary hover:text-primary transition-colors cursor-pointer group"
           >
             <span className="flex items-center gap-1.5">
-              <span>⏱️</span> {t("setupIn5Mins", { defaultMessage: "Setup in 5 Minutes" })}
+              <span className="text-base group-hover:scale-110 transition-transform">⏱️</span> {t("setupIn5Mins", { defaultMessage: "Setup in 5 Minutes" })}
             </span>
             <svg
-              className={`w-4 h-4 transition-transform ${guideOpen ? "rotate-180" : ""}`}
+              className={`w-4 h-4 text-text-muted group-hover:text-primary transition-transform duration-300 ${guideOpen ? "rotate-180" : ""}`}
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -254,15 +255,25 @@ export default function ProductCard({
             </svg>
           </button>
           
-          {guideOpen && (
-            <div className="mt-3 space-y-2 bg-surface p-3 rounded-lg border border-border">
-              {setupGuide.map((step, idx) => (
-                <p key={idx} className="text-sm text-text-secondary leading-relaxed">
-                  {step}
-                </p>
-              ))}
+          <div
+            className={`
+              grid transition-all duration-400 ease-in-out overflow-hidden
+              ${guideOpen ? "grid-rows-[1fr] opacity-100 mt-3" : "grid-rows-[0fr] opacity-0 mt-0 pointer-events-none"}
+            `}
+          >
+            <div className="overflow-hidden">
+              <div className="space-y-2.5 bg-surface/90 p-3.5 rounded-xl border border-border/80 text-xs shadow-inner">
+                {setupGuide.map((step, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-text-secondary leading-relaxed">
+                    <span className="w-4 h-4 rounded-full bg-primary-tint text-primary-dark font-bold flex-shrink-0 flex items-center justify-center text-[10px] mt-0.5 shadow-xs">
+                      {idx + 1}
+                    </span>
+                    <span className="flex-1">{step.replace(/^\d+\.\s*/, "").replace(/^\[AR-DRAFT\]\s*/, "")}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       )}
     </Card>
