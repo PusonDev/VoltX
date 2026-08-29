@@ -2,11 +2,9 @@ import type { Product } from "./supabase/types";
 
 /**
  * Single resolver for merchant URLs.
- * Returns affiliate_url if status is 'approved' and URL exists,
- * otherwise returns direct_url.
- * 
- * NEVER hardcode a merchant URL in any component.
- * Every product CTA must call this function.
+ * According to Master Spec v2:
+ * resolveMerchantUrl(product) returns affiliate_url ONLY when affiliate_status === 'approved'.
+ * There is no direct_url fallback for public display anymore.
  */
 export function resolveMerchantUrl(product: Product): string {
   if (
@@ -16,11 +14,11 @@ export function resolveMerchantUrl(product: Product): string {
   ) {
     return product.affiliate_url;
   }
-  return product.direct_url;
+  return "#";
 }
 
 /**
- * Check if a product is affiliate-linked (for displaying badges)
+ * Check if a product is approved and affiliate-ready
  */
 export function isAffiliate(product: Product): boolean {
   return (

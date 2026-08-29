@@ -96,33 +96,49 @@ export default async function ProblemPage({ params }: { params: Promise<{ locale
         </Container>
       </section>
 
-      {/* Recommended Products */}
-      {fittedProducts.length > 0 && (
-        <section className="py-16 bg-surface">
-          <Container>
-            <ScrollReveal>
-              <h2 className="text-text-primary mb-2">{tc("recommendedSolutions")}</h2>
-              <p className="text-text-secondary mb-8">
-                {tc("recommendedSolutionsSubtitle")}
-              </p>
-            </ScrollReveal>
+      {/* Recommended Products or Finalizing State */}
+      <section className="py-16 bg-surface">
+        <Container>
+          {fittedProducts.length > 0 ? (
+            <>
+              <ScrollReveal>
+                <h2 className="text-text-primary mb-2">{tc("recommendedSolutions")}</h2>
+                <p className="text-text-secondary mb-8">
+                  {tc("recommendedSolutionsSubtitle")}
+                </p>
+              </ScrollReveal>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {fittedProducts.map((product, i) => (
-                <ScrollReveal key={product.id} delay={i * 100}>
-                  <ProductCard
-                    product={product}
-                    fitScore={product.fit_score_for_problem}
-                    fitExplanation={product.fit_explanation}
-                    pageSlug={problem.slug}
-                    placement="problem-page"
-                  />
-                </ScrollReveal>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {fittedProducts.map((product, i) => (
+                  <ScrollReveal key={product.id} delay={i * 100}>
+                    <ProductCard
+                      product={product}
+                      fitScore={product.fit_score_for_problem}
+                      fitExplanation={product.fit_explanation}
+                      pageSlug={problem.slug}
+                      placement="problem-page"
+                    />
+                  </ScrollReveal>
+                ))}
+              </div>
+            </>
+          ) : (
+            <ScrollReveal>
+              <div className="max-w-xl mx-auto text-center py-12 px-6 bg-white rounded-2xl border border-border">
+                <div className="w-12 h-12 rounded-full bg-primary-tint flex items-center justify-center mx-auto mb-4">
+                  <span className="text-primary text-xl">🛡️</span>
+                </div>
+                <h3 className="text-lg font-bold text-text-primary mb-2">
+                  {tc("finalizingRecommendation")}
+                </h3>
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {tc("finalizingRecommendationDesc")}
+                </p>
+              </div>
+            </ScrollReveal>
+          )}
+        </Container>
+      </section>
     </>
   );
 }

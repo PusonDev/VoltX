@@ -3,8 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
-import Button from "@/components/ui/Button";
-import { resolveMerchantUrl, isAffiliate } from "@/lib/affiliate";
+import { resolveMerchantUrl } from "@/lib/affiliate";
 import type { Product } from "@/lib/supabase/types";
 
 interface ProductCardProps {
@@ -25,7 +24,6 @@ export default function ProductCard({
   const t = useTranslations("common");
   const locale = useLocale();
   const merchantUrl = resolveMerchantUrl(product);
-  const isAff = isAffiliate(product);
 
   const handleClick = async () => {
     // Log click via API
@@ -59,9 +57,6 @@ export default function ProductCard({
             <Badge variant="success">
               {t("fitScore")}: {fitScore.toFixed(1)}
             </Badge>
-          )}
-          {!isAff && (
-            <Badge variant="direct">{t("directLink")}</Badge>
           )}
         </div>
       </div>

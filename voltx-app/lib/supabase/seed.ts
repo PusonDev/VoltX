@@ -10,7 +10,13 @@ import type {
 } from "./types";
 
 /* ═══════════════════════════════════════
-   SEED DATA — English Base
+   SEED DATA — Master Spec v2
+   
+   Rules:
+   - affiliate_status = 'pending-verification' by default.
+   - affiliate_url = null by default (no fake / auto ?ref=voltx params).
+   - Only products manually set to affiliate_status === 'approved' and possessing
+     a valid affiliate_url are exposed to public pages.
    ═══════════════════════════════════════ */
 
 export const seedProducts: Product[] = [
@@ -30,15 +36,15 @@ export const seedProducts: Product[] = [
     recurring: true,
     commission_type: "percentage",
     commission_value: 25,
-    affiliate_status: "approved",
+    affiliate_status: "pending-verification",
     affiliate_network: "Impact",
-    affiliate_url: "https://1password.com/business?ref=voltx",
+    affiliate_url: null,
     direct_url: "https://1password.com/business",
     cookie_days: 30,
     last_verified_at: "2026-08-15T00:00:00Z",
     editorial_score: 9.2,
     fit_score: 9.5,
-    internal_notes: "Strong partner program. 25% recurring commission via Impact.",
+    internal_notes: "Apply via Impact. 25% recurring commission.",
     created_at: "2026-01-10T00:00:00Z",
     updated_at: "2026-08-15T00:00:00Z",
   },
@@ -58,45 +64,17 @@ export const seedProducts: Product[] = [
     recurring: true,
     commission_type: "flat",
     commission_value: 40,
-    affiliate_status: "approved",
+    affiliate_status: "pending-verification",
     affiliate_network: "CJ Affiliate",
-    affiliate_url: "https://nordpass.com/business?ref=voltx",
+    affiliate_url: null,
     direct_url: "https://nordpass.com/business",
     cookie_days: 30,
     last_verified_at: "2026-08-10T00:00:00Z",
     editorial_score: 8.1,
     fit_score: 8.4,
-    internal_notes: "Flat $40 per sale via CJ. Lower editorial score due to fewer admin features.",
+    internal_notes: "Flat $40 per sale via CJ.",
     created_at: "2026-02-05T00:00:00Z",
     updated_at: "2026-08-10T00:00:00Z",
-  },
-  {
-    id: "p3",
-    slug: "bitwarden-teams",
-    name: "Bitwarden Teams",
-    vendor: "Bitwarden",
-    category: "Password Management",
-    subcategory: "Team Password Vault",
-    description:
-      "Open-source password manager with end-to-end encryption. Self-hosting option, unlimited devices, and the most affordable team plan in its class.",
-    target_segment: ["small-business", "startup", "developer-team"],
-    platforms: ["Windows", "macOS", "iOS", "Android", "Linux", "Web"],
-    pricing_model: "per-user",
-    price_from: 4.0,
-    recurring: true,
-    commission_type: null,
-    commission_value: null,
-    affiliate_status: "direct-only",
-    affiliate_network: null,
-    affiliate_url: null,
-    direct_url: "https://bitwarden.com/pricing/business/",
-    cookie_days: null,
-    last_verified_at: "2026-08-20T00:00:00Z",
-    editorial_score: 8.8,
-    fit_score: 9.0,
-    internal_notes: "No affiliate program. Recommend anyway — great product for price-sensitive teams.",
-    created_at: "2026-01-15T00:00:00Z",
-    updated_at: "2026-08-20T00:00:00Z",
   },
   {
     id: "p4",
@@ -114,15 +92,15 @@ export const seedProducts: Product[] = [
     recurring: true,
     commission_type: "percentage",
     commission_value: 40,
-    affiliate_status: "approved",
+    affiliate_status: "pending-verification",
     affiliate_network: "ShareASale",
-    affiliate_url: "https://surfshark.com/teams?ref=voltx",
+    affiliate_url: null,
     direct_url: "https://surfshark.com/teams",
     cookie_days: 30,
     last_verified_at: "2026-08-18T00:00:00Z",
     editorial_score: 8.3,
     fit_score: 8.0,
-    internal_notes: "40% recurring via ShareASale. Good for remote teams.",
+    internal_notes: "40% recurring via ShareASale.",
     created_at: "2026-03-01T00:00:00Z",
     updated_at: "2026-08-18T00:00:00Z",
   },
@@ -142,7 +120,7 @@ export const seedProducts: Product[] = [
     recurring: true,
     commission_type: "percentage",
     commission_value: 20,
-    affiliate_status: "application-pending",
+    affiliate_status: "pending-verification",
     affiliate_network: "Commission Junction",
     affiliate_url: null,
     direct_url: "https://www.malwarebytes.com/business/endpoint-protection",
@@ -150,7 +128,7 @@ export const seedProducts: Product[] = [
     last_verified_at: "2026-07-25T00:00:00Z",
     editorial_score: 8.5,
     fit_score: 8.7,
-    internal_notes: "Application pending at CJ. Using direct URL for now.",
+    internal_notes: "Application at CJ. 20% commission.",
     created_at: "2026-02-20T00:00:00Z",
     updated_at: "2026-07-25T00:00:00Z",
   },
@@ -214,11 +192,9 @@ export const seedProblems: ProblemCluster[] = [
 export const seedProductProblemFits: ProductProblemFit[] = [
   { product_id: "p1", problem_id: "prob1", fit_score: 9.5, explanation: "1Password's shared vaults and breach monitoring directly solve password reuse by giving teams a secure, shared credential system." },
   { product_id: "p2", problem_id: "prob1", fit_score: 8.2, explanation: "NordPass offers solid team password management at a lower price point. Good for smaller teams with budget constraints." },
-  { product_id: "p3", problem_id: "prob1", fit_score: 9.0, explanation: "Bitwarden is the best value option for password management. Open-source, auditable, and the most affordable team plan." },
   { product_id: "p4", problem_id: "prob2", fit_score: 8.5, explanation: "Surfshark's unlimited device policy and dedicated IP options make it ideal for remote teams of any size." },
   { product_id: "p5", problem_id: "prob3", fit_score: 8.7, explanation: "Malwarebytes stops ransomware at the endpoint level. Simple to deploy for teams without a dedicated IT person." },
   { product_id: "p1", problem_id: "prob4", fit_score: 9.0, explanation: "Password management is the #1 first step we recommend for security beginners. 1Password makes it easy." },
-  { product_id: "p3", problem_id: "prob4", fit_score: 8.8, explanation: "For budget-conscious beginners, Bitwarden offers the best starting point at the lowest cost." },
 ];
 
 export const seedGuides: Guide[] = [
@@ -227,7 +203,7 @@ export const seedGuides: Guide[] = [
     slug: "password-manager-setup-guide",
     title: "How to Set Up a Password Manager for Your Small Business (2026 Guide)",
     excerpt: "Step-by-step guide to rolling out a password manager across your team — from choosing the right tool to getting 100% adoption.",
-    content: "This comprehensive guide walks you through evaluating, choosing, and deploying a password manager for your small business team. We cover the migration process from browser-saved passwords, how to set up shared vaults for team credentials, and strategies for getting reluctant employees to actually use it.\n\n## Why Password Managers Matter\n\nThe average employee reuses passwords across 14 different services. When any one of those services suffers a data breach, every account sharing that password is compromised. A password manager eliminates this risk by generating unique, complex passwords for every service and storing them in an encrypted vault.\n\n## Choosing the Right Tool\n\nWe recommend starting with one of three options based on your situation:\n\n1. **1Password Business** — Best overall for teams that want a polished experience with strong admin controls\n2. **Bitwarden Teams** — Best value and only option with self-hosting capability\n3. **NordPass Business** — Most affordable per-user pricing for very small teams\n\n## Deployment Steps\n\n1. Start with a pilot group of 3-5 employees\n2. Import existing passwords from browser storage\n3. Set up shared vaults for team credentials\n4. Enable two-factor authentication on the vault itself\n5. Schedule a 15-minute walkthrough for the full team\n6. Set a deadline for browser password manager migration",
+    content: "This comprehensive guide walks you through evaluating, choosing, and deploying a password manager for your small business team. We cover the migration process from browser-saved passwords, how to set up shared vaults for team credentials, and strategies for getting reluctant employees to actually use it.\n\n## Why Password Managers Matter\n\nThe average employee reuses passwords across 14 different services. When any one of those services suffers a data breach, every account sharing that password is compromised. A password manager eliminates this risk by generating unique, complex passwords for every service and storing them in an encrypted vault.\n\n## Choosing the Right Tool\n\nWe recommend starting with verified business password management options:\n\n1. **1Password Business** — Best overall for teams that want a polished experience with strong admin controls\n2. **NordPass Business** — Most affordable per-user pricing for very small teams\n\n## Deployment Steps\n\n1. Start with a pilot group of 3-5 employees\n2. Import existing passwords from browser storage\n3. Set up shared vaults for team credentials\n4. Enable two-factor authentication on the vault itself\n5. Schedule a 15-minute walkthrough for the full team\n6. Set a deadline for browser password manager migration",
     category: "Getting Started",
     created_at: "2026-03-15T00:00:00Z",
     updated_at: "2026-08-01T00:00:00Z",
@@ -251,7 +227,7 @@ export const seedReviews: Review[] = [
     product_id: "p1",
     title: "1Password Business Review: Still the Best Team Password Manager in 2026?",
     excerpt: "We tested 1Password Business for 6 months with a real team. Here's our honest assessment of its strengths, weaknesses, and whether it justifies the price.",
-    content: "After six months of daily use with a 12-person team, 1Password Business remains our top recommendation for small business password management — but it's not perfect.\n\n## What We Tested\n\nWe deployed 1Password Business across our test team, migrated from browser-saved passwords, set up shared vaults for team credentials, and tested admin features like activity logs and policy enforcement.\n\n## The Good\n\n1Password's interface is the most polished in the category. The browser extension works seamlessly, autofill rarely breaks, and the Watchtower feature (which monitors for breached passwords) caught three compromised credentials in our first week.\n\n## The Not-So-Good\n\nAt $7.99/user/month, it's the most expensive option in our test group. For teams under 5 people, the cost adds up quickly. The admin dashboard, while functional, lacks some of the granular controls that Bitwarden offers.\n\n## Verdict\n\nIf budget isn't your primary constraint, 1Password is the safest choice. Best-in-class UX means higher team adoption rates, which is ultimately what matters most for a password manager.",
+    content: "After six months of daily use with a 12-person team, 1Password Business remains our top recommendation for small business password management — but it's not perfect.\n\n## What We Tested\n\nWe deployed 1Password Business across our test team, migrated from browser-saved passwords, set up shared vaults for team credentials, and tested admin features like activity logs and policy enforcement.\n\n## The Good\n\n1Password's interface is the most polished in the category. The browser extension works seamlessly, autofill rarely breaks, and the Watchtower feature (which monitors for breached passwords) caught three compromised credentials in our first week.\n\n## The Not-So-Good\n\nAt $7.99/user/month, it's the most expensive option in our test group. For teams under 5 people, the cost adds up quickly.\n\n## Verdict\n\n1Password is the safest choice for small teams needing enterprise-grade reliability and polished user adoption.",
     pros: [
       "Best-in-class user experience and interface design",
       "Watchtower breach monitoring catches compromised passwords",
@@ -276,8 +252,8 @@ export const seedBestCategories: BestCategory[] = [
     id: "b1",
     slug: "password-manager-for-small-business",
     title: "Best Password Managers for Small Business (2026)",
-    description: "We tested and compared every major password manager for small teams. Here are our top picks ranked by fit score, not commission.",
-    product_ids: ["p1", "p3", "p2"],
+    description: "We tested and compared major password managers for small teams. Here are our top picks ranked by fit score.",
+    product_ids: ["p1", "p2"],
     created_at: "2026-04-15T00:00:00Z",
     updated_at: "2026-08-15T00:00:00Z",
   },
@@ -293,16 +269,6 @@ export const seedComparisons: Comparison[] = [
     winner_id: "p1",
     created_at: "2026-06-01T00:00:00Z",
     updated_at: "2026-08-10T00:00:00Z",
-  },
-  {
-    id: "c2",
-    slug: "1password-vs-bitwarden",
-    product1_id: "p1",
-    product2_id: "p3",
-    comparison_content: "The battle between 1Password and Bitwarden is the classic premium-vs-value comparison. Both are excellent — the right choice depends on your team's priorities.\n\n## Price\n1Password: $7.99/user/month | Bitwarden: $4.00/user/month\n\nBitwarden is significantly cheaper and even offers a self-hosted option for teams that want full data control.\n\n## Open Source\nBitwarden is fully open-source and regularly audited. 1Password is closed-source but has undergone independent security audits.\n\n## Features\n1Password has a more polished UX and better Watchtower integration. Bitwarden offers more flexibility, self-hosting, and API access for developer teams.\n\n## Our Pick\nFor developer teams or budget-first: **Bitwarden**. For teams wanting the smoothest experience: **1Password**.",
-    winner_id: null,
-    created_at: "2026-06-15T00:00:00Z",
-    updated_at: "2026-08-12T00:00:00Z",
   },
 ];
 
@@ -359,11 +325,6 @@ export const arabicProducts: Record<string, Partial<Product>> = {
     category: "إدارة كلمات المرور",
     subcategory: "خزنة كلمات المرور للفريق",
   },
-  "bitwarden-teams": {
-    description: "مدير كلمات مرور مفتوح المصدر بتشفير شامل. خيار الاستضافة الذاتية، أجهزة غير محدودة، والخطة الأكثر اقتصادية.",
-    category: "إدارة كلمات المرور",
-    subcategory: "خزنة كلمات المرور للفريق",
-  },
   "surfshark-vpn": {
     description: "VPN سريع بأجهزة غير محدودة، مانع الإعلانات CleanWeb، وخيارات IP مخصصة لفرق العمل عن بُعد.",
     category: "شبكات VPN وأمان الشبكات",
@@ -380,7 +341,7 @@ export const arabicReviews: Record<string, Partial<Review>> = {
   "1password-business-review": {
     title: "مراجعة 1Password Business: هل لا يزال أفضل مدير كلمات مرور للفرق في 2026؟",
     excerpt: "اختبرنا 1Password Business لمدة 6 أشهر مع فريق عمل حقيقي. إليك تقييمنا الصادق لميزاته وعيوبه وما إذا كان يستحق سعره.",
-    content: "بعد ستة أشهر من الاستخدام اليومي مع فريق مكون من 12 شخصًا، يظل 1Password Business خيارنا الأول الموصى به لإدارة كلمات مرور الشركات الصغيرة — ولكنه ليس مثاليًا تمامًا.\n\n## ما قمنا باختباره\n\nقمنا بتطبيق 1Password Business عبر فريق الاختبار لدينا، وقمنا بنقل كلمات المرور المحفوظة في المتصفحات، وإعداد خزائن مشتركة لبيانات الفريق، واختبار الميزات الإدارية مثل سجلات الأنشطة.\n\n## المميزات الإيجابية\n\nواجهة 1Password هي الأكثر تميزًا في هذه الفئة. إضافة المتصفح تعمل بسلاسة فائقة، ونادرًا ما يفشل التعبئة التلقائية، كما اكتشفت ميزة Watchtower ثلاثة بيانات اعتماد مخترقة في أسبوعنا الأول.\n\n## السلبيات\n\nبسعر 7.99 دولار/مستخدم/شهر، يعتبر الخيار الأغلى. للفرق الأقل من 5 أشخاص، تتراكم التكلفة بسرعة.\n\n## الحكم النهائي\n\nإذا لم تكن الميزانية هي العائق الأساسي لديك، فإن 1Password هو الخيار الأكثر أمانًا واعتمادية.",
+    content: "بعد ستة أشهر من الاستخدام اليومي مع فريق مكون من 12 شخصًا، يظل 1Password Business خيارنا الأول الموصى به لإدارة كلمات مرور الشركات الصغيرة — ولكنه ليس مثاليًا تمامًا.\n\n## ما قمنا باختباره\n\nقمنا بتطبيق 1Password Business عبر فريق الاختبار لدينا، وقمنا بنقل كلمات المرور المحفوظة في المتصفحات، وإعداد خزائن مشتركة لبيانات الفريق، واختبار الميزات الإدارية مثل سجلات الأنشطة.\n\n## المميزات الإيجابية\n\nواجهة 1Password هي الأكثر تميزًا في هذه الفئة. إضافة المتصفح تعمل بسلاسة فائقة، ونادرًا ما يفشل التعبئة التلقائية، كما اكتشفت ميزة Watchtower ثلاثة بيانات اعتماد مخترقة في أسبوعنا الأول.\n\n## السلبيات\n\nبسعر 7.99 دولار/مستخدم/شهر، يعتبر الخيار الأغلى. للفرق الأقل من 5 أشخاص، تتراكم التكلفة بسرعة.\n\n## الحكم النهائي\n\n1Password هو الخيار الأكثر أمانًا واعتمادية للفرق التي تحتاج إلى موثوقية عالية.",
     pros: [
       "أفضل تجربة مستخدم وتصميم واجهة في فئته",
       "ميزة Watchtower لمراقبة واكتشاف كلمات المرور المخترقة",
@@ -402,7 +363,7 @@ export const arabicGuides: Record<string, Partial<Guide>> = {
   "password-manager-setup-guide": {
     title: "كيفية إعداد مدير كلمات المرور لشركتك الصغيرة (دليل 2026)",
     excerpt: "دليل خطوة بخطوة لنشر مدير كلمات المرور عبر فريقك — من اختيار الأداة المناسبة وحتى تبني الفريق بنسبة 100%.",
-    content: "يرشدك هذا الدليل الشامل خلال تقييم واختيار ونشر مدير كلمات المرور لفريق عملك الصغير. نغطي عملية النقل من المتصفحات، وكيفية إعداد الخزائن المشتركة، واستراتيجيات تشجيع الموظفين على استخدامه.\n\n## لماذا تعد مدراء كلمات المرور ضرورية\n\nيعيد الموظف العادي استخدام كلمات المرور عبر 14 خدمة مختلفة. عندما تتعرض أي من هذه الخدمات لاختراق، تتعرض جميع الحسابات للخطر. مدير كلمات المرور يقضي على هذا الخطر بإنشاء كلمات مرور فريدة ومعقدة لكل خدمة وتخزينها في خزنة مشفرة.\n\n## اختيار الأداة المناسبة\n\nنوصي بالبدء بأحد الخيارات الثلاثة التالية:\n\n1. **1Password Business** — الأفضل للفرق التي تريد تجربة سلسة مع تحكم إداري قوي\n2. **Bitwarden Teams** — أفضل قيمة والخيار الوحيد مع استضافة ذاتية\n3. **NordPass Business** — السعر الأكثر ملاءمة لكل مستخدم للفرق الصغيرة جدًا\n\n## خطوات النشر والتشغيل\n\n1. ابدأ بمجموعة تجريبية من 3 إلى 5 موظفين\n2. استيراد كلمات المرور الحالية من تخزين المتصفح\n3. إعداد خزائن مشتركة لبيانات الفريق\n4. تفعيل المصادقة الثنائية (2FA) على الخزنة نفسها\n5. جدولة شرح مدته 15 دقيقة للفريق بالكامل\n6. تحديد موعد نهائي لإلغاء كلمات مرور المتصفح القديمة",
+    content: "يرشدك هذا الدليل الشامل خلال تقييم واختيار ونشر مدير كلمات المرور لفريق عملك الصغير. نغطي عملية النقل من المتصفحات، وكيفية إعداد الخزائن المشتركة، واستراتيجيات تشجيع الموظفين على استخدامه.\n\n## لماذا تعد مدراء كلمات المرور ضرورية\n\nيعيد الموظف العادي استخدام كلمات المرور عبر 14 خدمة مختلفة. عندما تتعرض أي من هذه الخدمات لاختراق، تتعرض جميع الحسابات للخطر. مدير كلمات المرور يقضي على هذا الخطر بإنشاء كلمات مرور فريدة ومعقدة لكل خدمة وتخزينها في خزنة مشفرة.\n\n## اختيار الأداة المناسبة\n\nنوصي بالبدء بأحد الخيارات المعتمدة:\n\n1. **1Password Business** — الأفضل للفرق التي تريد تجربة سلسة مع تحكم إداري قوي\n2. **NordPass Business** — السعر الأكثر ملاءمة لكل مستخدم للفرق الصغيرة جدًا\n\n## خطوات النشر والتشغيل\n\n1. ابدأ بمجموعة تجريبية من 3 إلى 5 موظفين\n2. استيراد كلمات المرور الحالية من تخزين المتصفح\n3. إعداد خزائن مشتركة لبيانات الفريق\n4. تفعيل المصادقة الثنائية (2FA) على الخزنة نفسها\n5. جدولة شرح مدته 15 دقيقة للفريق بالكامل\n6. تحديد موعد نهائي لإلغاء كلمات مرور المتصفح القديمة",
     category: "البداية السريعة",
   },
   "small-business-cybersecurity-checklist": {
@@ -416,7 +377,7 @@ export const arabicGuides: Record<string, Partial<Guide>> = {
 export const arabicBestCategories: Record<string, Partial<BestCategory>> = {
   "password-manager-for-small-business": {
     title: "أفضل برامج إدارة كلمات المرور للشركات الصغيرة (2026)",
-    description: "قمنا باختبار ومقارنة جميع مدراء كلمات المرور الرئيسيين للفرق الصغيرة. إليك أفضل اختياراتنا مرتبة حسب درجة الملاءمة وليس العمولة.",
+    description: "قمنا باختبار ومقارنة مدراء كلمات المرور الرئيسيين للفرق الصغيرة. إليك أفضل اختياراتنا مرتبة حسب درجة الملاءمة.",
   },
 };
 
@@ -424,28 +385,35 @@ export const arabicComparisons: Record<string, Partial<Comparison>> = {
   "1password-vs-nordpass": {
     comparison_content: "يقوم كل من 1Password و NordPass بحل نفس المشكلة الأساسية — إدارة كلمات مرور الفريق — ولكنهما يتعاملان معها بشكل مختلف. يركز 1Password على تجربة المستخدم المتميزة والتحكم الإداري، بينما يوفر NordPass خيارًا أكثر اقتصادية.\n\n## السعر\n1Password: 7.99 دولار/مستخدم/شهر | NordPass: 3.99 دولار/مستخدم/شهر\n\nNordPass بنصف السعر تقريبًا، مما يجعله الفائز للفرق المهتمة بالميزانية.\n\n## الميزات\nيتفوق 1Password في أدوات المشرف وتنظيم الخزائن المشتركة ومراقبة الاختراق Watchtower. يوفر NordPass الأساسيات القوية مع ميزات إدارة فريق أقل تقدمًا.\n\n## اختيارنا\nللفرق ذات الميزانية الجيدة: **1Password**. للفرق المهتمة بالتكلفة: **NordPass**.",
   },
-  "1password-vs-bitwarden": {
-    comparison_content: "المقارنة بين 1Password و Bitwarden هي مقارنة كلاسيكية بين الجودة الفائقة والقيمة الاقتصادية. كلاهما ممتاز — ويعتمد الاختيار على أولويات فريقك.\n\n## السعر\n1Password: 7.99 دولار/مستخدم/شهر | Bitwarden: 4.00 دولار/مستخدم/شهر\n\nBitwarden أرخص بكثير ويوفر خيار استضافة ذاتية للفرق التي تريد التحكم الكامل في بياناتها.\n\n## المصدر المفتوح\nBitwarden مفتوح المصدر بالكامل وتم تدقيقه بانتظام. 1Password مغلق المصدر ولكنه خضع لتدقيقات أمنية مستقلة.\n\n## اختيارنا\nلفرق المطورين أو الميزانية الاقتصادية: **Bitwarden**. للفرق الباحثة عن أسهل تجربة: **1Password**.",
-  },
 };
 
 /* ═══════════════════════════════════════
-   HELPER — get data with Locale Support
+   HELPER — get data with strict approved filter
    ═══════════════════════════════════════ */
 
-export function getProducts(locale: string = "en"): Product[] {
+/**
+ * Public products getter.
+ * Master Spec v2 Hard Rule: ONLY products with affiliate_status === 'approved' are returned.
+ */
+export function getProducts(locale: string = "en", includePending: boolean = false): Product[] {
+  const products = includePending
+    ? seedProducts
+    : seedProducts.filter((p) => p.affiliate_status === "approved");
+
   if (locale === "ar") {
-    return seedProducts.map((p) => {
+    return products.map((p) => {
       const ar = arabicProducts[p.slug] || {};
       return { ...p, ...ar };
     });
   }
-  return seedProducts;
+  return products;
 }
 
-export function getProductBySlug(slug: string, locale: string = "en"): Product | undefined {
-  const p = seedProducts.find((p) => p.slug === slug);
+export function getProductBySlug(slug: string, locale: string = "en", includePending: boolean = false): Product | undefined {
+  const p = seedProducts.find((item) => item.slug === slug);
   if (!p) return undefined;
+  if (!includePending && p.affiliate_status !== "approved") return undefined;
+
   if (locale === "ar") {
     const ar = arabicProducts[slug] || {};
     return { ...p, ...ar };
@@ -478,11 +446,12 @@ export function getProductsForProblem(problemId: string, locale: string = "en"):
     .filter((f) => f.problem_id === problemId)
     .sort((a, b) => b.fit_score - a.fit_score);
 
-  const localizedProducts = getProducts(locale);
+  // Strictly only get approved products
+  const approvedProducts = getProducts(locale, false);
 
   return fits
     .map((fit) => {
-      const product = localizedProducts.find((p) => p.id === fit.product_id);
+      const product = approvedProducts.find((p) => p.id === fit.product_id);
       if (!product) return null;
       return {
         ...product,
@@ -514,18 +483,25 @@ export function getGuideBySlug(slug: string, locale: string = "en"): Guide | und
 }
 
 export function getReviews(locale: string = "en"): Review[] {
+  // Only show reviews if product is approved
+  const approvedIds = seedProducts.filter((p) => p.affiliate_status === "approved").map((p) => p.id);
+  const reviews = seedReviews.filter((r) => approvedIds.includes(r.product_id));
+
   if (locale === "ar") {
-    return seedReviews.map((r) => {
+    return reviews.map((r) => {
       const ar = arabicReviews[r.slug] || {};
       return { ...r, ...ar };
     });
   }
-  return seedReviews;
+  return reviews;
 }
 
 export function getReviewBySlug(slug: string, locale: string = "en"): Review | undefined {
   const r = seedReviews.find((item) => item.slug === slug);
   if (!r) return undefined;
+  const product = seedProducts.find((p) => p.id === r.product_id);
+  if (!product || product.affiliate_status !== "approved") return undefined;
+
   if (locale === "ar") {
     const ar = arabicReviews[slug] || {};
     return { ...r, ...ar };
@@ -554,18 +530,25 @@ export function getBestCategoryBySlug(slug: string, locale: string = "en"): Best
 }
 
 export function getComparisons(locale: string = "en"): Comparison[] {
+  const approvedIds = seedProducts.filter((p) => p.affiliate_status === "approved").map((p) => p.id);
+  const comparisons = seedComparisons.filter((c) => approvedIds.includes(c.product1_id) && approvedIds.includes(c.product2_id));
+
   if (locale === "ar") {
-    return seedComparisons.map((c) => {
+    return comparisons.map((c) => {
       const ar = arabicComparisons[c.slug] || {};
       return { ...c, ...ar };
     });
   }
-  return seedComparisons;
+  return comparisons;
 }
 
 export function getComparisonBySlug(slug: string, locale: string = "en"): Comparison | undefined {
   const c = seedComparisons.find((item) => item.slug === slug);
   if (!c) return undefined;
+  const p1 = seedProducts.find((p) => p.id === c.product1_id);
+  const p2 = seedProducts.find((p) => p.id === c.product2_id);
+  if (!p1 || !p2 || p1.affiliate_status !== "approved" || p2.affiliate_status !== "approved") return undefined;
+
   if (locale === "ar") {
     const ar = arabicComparisons[slug] || {};
     return { ...c, ...ar };

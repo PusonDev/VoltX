@@ -60,7 +60,9 @@
     "whyTrustUs": "Why trust us?",
     "copyright": "© {year} VoltX. All rights reserved.",
     "recommendedSolutions": "Recommended Solutions",
-    "recommendedSolutionsSubtitle": "Products ranked by fit score for this specific challenge — not by commission."
+    "recommendedSolutionsSubtitle": "Products ranked by fit score for this specific challenge — not by commission.",
+    "finalizingRecommendation": "We're finalizing our recommendation for this challenge",
+    "finalizingRecommendationDesc": "We only feature tools we have personally verified with confirmed, accessible partner programs. Check back soon."
   },
   "home": {
     "heroTitle": "Stop guessing.\nStart protecting your business.",
@@ -81,7 +83,7 @@
     "trust1": "Rankings based on fit score & editorial analysis only",
     "trust2": "Commission never influences recommendation order",
     "trust3": "Every product independently verified and re-checked",
-    "trust4": "Direct links shown for products without affiliate programs",
+    "trust4": "We only feature tools we can verify and monetize responsibly",
     "ctaTitle": "Ready to find the right security tools?",
     "ctaSubtitle": "Take 2 minutes. Get recommendations that actually fit your business.",
     "ctaCta": "Start Your Free Diagnostic"

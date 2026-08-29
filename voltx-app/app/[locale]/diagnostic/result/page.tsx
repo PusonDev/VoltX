@@ -10,6 +10,7 @@ import { getProducts } from "@/lib/supabase/seed";
 
 export default function DiagnosticResultPage() {
   const t = useTranslations("diagnostic");
+  const tc = useTranslations("common");
   const locale = useLocale();
   const [isGated, setIsGated] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -37,9 +38,8 @@ export default function DiagnosticResultPage() {
     setIsGated(false);
   };
 
-  // Simple recommendation based on diagnostic answers
-  const allProducts = getProducts();
-  // Show top 3 products by editorial score as recommendations
+  // Only approved products returned by getProducts
+  const allProducts = getProducts(locale, false);
   const recommendations = [...allProducts]
     .sort((a, b) => b.editorial_score - a.editorial_score)
     .slice(0, 3);
@@ -81,17 +81,33 @@ export default function DiagnosticResultPage() {
           </p>
         </ScrollReveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {recommendations.map((product, i) => (
-            <ScrollReveal key={product.id} delay={i * 100}>
-              <ProductCard
-                product={product}
-                pageSlug="diagnostic-result"
-                placement="diagnostic-result"
-              />
-            </ScrollReveal>
-          ))}
-        </div>
+        {recommendations.length > 0 ? (
+          <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recommendations.map((product, i) => (
+              <ScrollReveal key={product.id} delay={i * 100}>
+                <ProductCard
+                  product={product}
+                  pageSlug="diagnostic-result"
+                  placement="diagnostic-result"
+                />
+              </ScrollReveal>
+            ))}
+          </div>
+        ) : (
+          <ScrollReveal>
+            <div className="mt-12 max-w-xl mx-auto text-center py-12 px-6 bg-surface rounded-2xl border border-border">
+              <div className="w-12 h-12 rounded-full bg-primary-tint flex items-center justify-center mx-auto mb-4">
+                <span className="text-primary text-xl">🛡️</span>
+              </div>
+              <h3 className="text-lg font-bold text-text-primary mb-2">
+                {tc("finalizingRecommendation")}
+              </h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                {tc("finalizingRecommendationDesc")}
+              </p>
+            </div>
+          </ScrollReveal>
+        )}
       </Container>
     </section>
   );

@@ -1,11 +1,8 @@
 /* ─── VoltX Design Tokens — Supabase DB Types ─── */
 
 export type AffiliateStatus =
-  | "approved"
-  | "application-pending"
-  | "network-program"
-  | "direct-only"
-  | "unverified";
+  | "pending-verification"
+  | "approved";
 
 export interface Product {
   id: string;
@@ -75,16 +72,6 @@ export interface LeadTopicTouch {
   created_at: string;
 }
 
-export interface AffiliateClick {
-  id: string;
-  product_id: string;
-  session_id: string;
-  locale: string;
-  page_slug: string;
-  placement: string;
-  created_at: string;
-}
-
 export interface ContentTranslation {
   id: string;
   content_type: string;
@@ -93,6 +80,8 @@ export interface ContentTranslation {
   translated_fields: Record<string, string>;
   needs_review: boolean;
   published: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface Guide {
@@ -132,7 +121,7 @@ export interface BestCategory {
 
 export interface Comparison {
   id: string;
-  slug: string; // e.g. "1password-vs-nordpass"
+  slug: string;
   product1_id: string;
   product2_id: string;
   comparison_content: string;
